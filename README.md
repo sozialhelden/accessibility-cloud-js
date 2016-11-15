@@ -7,7 +7,7 @@ Right now the sourcecode of the example resides inside the [ repository](https:/
 
 ### Sign up / in
 
-1. Open https://acloud.eu.meteorapp.com/
+1. Open https://www.accessibility.cloud
 2. Click *Sign up* or *Login*
 
 ### Obtain an API token
