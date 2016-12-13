@@ -141,7 +141,7 @@ const AccessibilityCloud = {
         (<a href="${licenseURL}">${(license.shortName || license.name)}</a>)`;
     });
     if (links.length) {
-      $(element).append(`<p class="ac-licenses">Data: ${links.join(', ')}</p>`);
+      $(element).append(`<p class="ac-licenses">Source: ${links.join(', ')}</p>`);
     }
   },
 
