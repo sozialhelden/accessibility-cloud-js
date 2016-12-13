@@ -62,7 +62,9 @@ const AccessibilityCloud = {
         <li class="ac-result" role="gridcell" aria-expanded="false"> \
           {{#properties}} \
             <div class="ac-summary"> \
-              <img src="${this.apiDomain}/icons/categories/{{category}}@2x.png" role="presentation"> \
+              <img src="${this.apiDomain}/icons/categories/{{category}}@2x.png"
+                srcset="${this.apiDomain}/icons/categories/{{category}}@4x.png 2x"
+                role="presentation"> \
               <header class="ac-result-name" role="heading">{{name}}</header> \
               <div class="ac-result-distance">{{formattedDistance}}</div> \
               <div class="ac-result-category">{{humanizedCategory}}</div> \
