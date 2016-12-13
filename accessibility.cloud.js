@@ -40,6 +40,12 @@ function recursivelyRenderProperties(element) {
   return element;
 }
 
+function isAccessible(place) {
+  return place.accessibility &&
+    place.accessibility.accessibleWith &&
+    place.accessibility.accessibleWith.wheelchair;
+}
+
 const AccessibilityCloud = {
   apiDomain: 'https://www.accessibility.cloud',
 
@@ -59,8 +65,8 @@ const AccessibilityCloud = {
     // eslint-disable-next-line no-multi-str
     return `<ul class="ac-result-list" role="treegrid"> \
       {{#places}} \
-        <li class="ac-result" role="gridcell" aria-expanded="false"> \
-          {{#properties}} \
+        {{#properties}} \
+          <li class="ac-result {{isAccessibleClass}}" role="gridcell" aria-expanded="false"> \
             <div class="ac-summary"> \
               <img src="${this.apiDomain}/icons/categories/{{category}}@2x.png"
                 srcset="${this.apiDomain}/icons/categories/{{category}}@4x.png 2x"
@@ -72,8 +78,8 @@ const AccessibilityCloud = {
               <div class="ac-result-accessibility-summary">{{accessibilitySummary}}</div> \
               <div class="ac-result-accessibility-details ac-hidden">{{{formattedAccessibility}}}</div> \
             </div> \
-          {{/properties}} \
-        </li> \
+          </li> \
+        {{/properties}} \
       {{/places}} \
     </ul>`;
   },
@@ -95,8 +101,11 @@ const AccessibilityCloud = {
         formattedAccessibility() {
           return recursivelyRenderProperties(this.accessibility);
         },
+        isAccessibleClass() {
+          return isAccessible(this) ? 'is-accessible' : '';
+        },
         accessibilitySummary() {
-          if (this.accessibility.accessibleWith.wheelchair) {
+          if (isAccessible(this)) {
             return 'Accessible with wheelchair';
           }
           return 'NOT accessible with wheelchair';
