@@ -16,6 +16,8 @@ const config = {
   },
   output: {
     filename: 'dist/accessibility.cloud.min.js',
+    library: 'accessibility.cloud',
+    libraryTarget: 'umd',
   },
   resolve: {
     modules: [
@@ -39,5 +41,6 @@ const config = {
     hot: true,
   },
 };
+
 
 module.exports = config;

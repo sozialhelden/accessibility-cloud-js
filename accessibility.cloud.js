@@ -40,7 +40,7 @@ function recursivelyRenderProperties(element) {
   return element;
 }
 
-window.AccessibilityCloud = {
+const AccessibilityCloud = {
   apiDomain: 'https://www.accessibility.cloud',
 
   getPlacesAround(parameters) {
@@ -156,3 +156,5 @@ window.AccessibilityCloud = {
       });
   },
 };
+
+export default AccessibilityCloud;
