@@ -1,4 +1,5 @@
 import Mustache from 'mustache';
+import humanizeString from 'humanize-string';
 
 function formatName(name) {
   return name.replace(/([A-Z])/g, ' $1')
@@ -64,8 +65,8 @@ window.AccessibilityCloud = {
               <img src="https://dl.dropboxusercontent.com/u/5503063/ac/icons/{{category}}.png" role="presentation"> \
               <header class="ac-result-name" role="heading">{{name}}</header> \
               <div class="ac-result-distance">{{formattedDistance}}</div> \
-              <!-- <div class="ac-result-category">{{category}}</div> --> \
-              <a href="{{detailsURL}}" class="ac-result-link">{{sourceName}}</a> \
+              <div class="ac-result-category">{{humanizedCategory}}</div> \
+              <a href="{{infoPageUrl}}" class="ac-result-link">{{sourceName}}</a> \
               <div class="ac-result-accessibility-summary">{{accessibilitySummary}}</div> \
               <div class="ac-result-accessibility-details ac-hidden">{{{formattedAccessibility}}}</div> \
             </div> \
@@ -83,6 +84,9 @@ window.AccessibilityCloud = {
     if (places && places.length) {
       $(element).html(Mustache.render(this.resultsTemplate(), {
         places,
+        humanizedCategory() {
+          return humanizeString(this.category);
+        },
         formattedDistance() {
           return `${Math.round(this.distance)}m`;
         },
