@@ -44,7 +44,7 @@
     "build": "./node_modules/webpack/bin/webpack.js",
     "test": "node -v",
     "preversion": "npm test",
-    "version": "npm run build",
+    "version": "npm run build && git add --force dist/accessibility.cloud.min.js && git commit -am 'Build minified version'",
     "postversion": "npm test"
   }
 }
