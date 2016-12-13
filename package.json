@@ -5,7 +5,19 @@
   "author": "The accessibility.cloud team",
   "license": "MIT",
   "main": "accessibility.cloud.js",
-  "repository": "https://github.com/sozialhelden/accessibility-cloud-js.git",
+  "homepage": "https://github.com/sozialhelden/accessibility-cloud-js",
+  "bugs": {
+    "email": "support@accessibility.cloud"
+  },
+  "repository": {
+    "type": "git",
+    "url": "sozialhelden/accessibility-cloud-js"
+  },
+  "keywords": [
+    "accessibility",
+    "wheelmap",
+    "poi"
+  ],
   "dependencies": {
     "humanize-string": "^1.0.1",
     "mustache": "^2.3.0"
