@@ -15,7 +15,7 @@ body.ac-example {
   max-width: 450px;
   margin: 0 0 1em 0;
   padding: 0;
-  padding-left:30px;
+  padding-left: 30px;
 }
 
 .ac-summary {
@@ -47,31 +47,34 @@ body.ac-example {
 }
 
 .ac-result-accessibility-details > ul.ac-group {
-  padding:0;
-  color:#444;
+  padding: 0;
+  color: #444;
 }
 
-.ac-result li.ac-group > span {
+.ac-result li.ac-group > .subtle {
   font-weight: 400;
 }
 
 .ac-result ul {
-  padding:0 0 0.5em 1em;
+  padding: 0 0 0.5em 1em;
 }
 
 .ac-result ul.ac-list {
-  padding:0 0 0.5em 0em;
+  padding: 0 0 0.5em 0em;
 }
 
 .ac-result li.ac-group {
-  padding:0.5em 0 0.5em 0em;
+  padding: 0.5em 0 0.5em 0em;
 }
-
 
 .ac-result li {
   list-style: none;
 }
+
 .ac-hidden {
   display:none;
 }
 
+.ac-error {
+  color: red;
+}

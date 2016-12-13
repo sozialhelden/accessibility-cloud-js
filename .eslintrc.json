@@ -1,0 +1,22 @@
+{
+  "env": {
+    "browser": true
+  },
+  "globals": {
+    "$": true
+  },
+  "settings": {
+    "import/resolver": "webpack"
+  },
+  "extends": [
+    "airbnb"
+  ],
+  "rules": {
+    "no-underscore-dangle": [0]
+  },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  }
+}

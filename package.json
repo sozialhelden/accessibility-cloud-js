@@ -1,0 +1,36 @@
+{
+  "name": "accessibility.cloud",
+  "version": "0.0.2",
+  "description": "Fetches and shows places from accessibility.cloud on your website.",
+  "author": "The accessibility.cloud team",
+  "license": "MIT",
+  "main": "accessibility.cloud.js",
+  "repository": "https://github.com/sozialhelden/accessibility-cloud-js.git",
+  "dependencies": {
+    "mustache": "^2.3.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.14.0",
+    "babel-eslint": "^7.0.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-preset-es2015-minimal": "^2.1.0",
+    "babili-webpack-plugin": "0.0.7",
+    "css-loader": "^0.25.0",
+    "eslint": "^3.12.1",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^2.2.3",
+    "eslint-plugin-react": "^6.8.0",
+    "uglify-loader": "^1.3.0",
+    "webpack": "^2.1.0-beta.28"
+  },
+  "scripts": {
+    "start": "NODE_ENV=development ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base example/ --hot --inline --devtool eval --https --host 0.0.0.0",
+    "build": "./node_modules/webpack/bin/webpack.js",
+    "test": "node -v",
+    "preversion": "npm test",
+    "version": "npm run build",
+    "postversion": "npm test"
+  }
+}
