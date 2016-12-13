@@ -26,12 +26,12 @@ function recursivelyRenderProperties(element) {
         if (key === 'areas' && value.length === 1) {
           return recursivelyRenderProperties(value[0]);
         }
-        return `<li class="ac-group"><span class='subtle'>${formatName(key)}</span> ${recursivelyRenderProperties(value)}</li>`;
+        return `<li class="ac-group"><header class='subtle'>${formatName(key)}</header> ${recursivelyRenderProperties(value)}</li>`;
       }
       if (key.startsWith('rating')) {
         return `<li class="ac-rating">${formatName(key)}: ${formatRating(parseFloat(value))}</li>`;
       }
-      return `<li class="ac-${typeof value}">${formatName(key)}: ${formatValue(value)}</li>`;
+      return `<li class="ac-${typeof value}">${formatName(key)}: <span class='value'>${formatValue(value)}</span></li>`;
     });
     return `<ul class="ac-group">${listElements.join('')}</ul>`;
   }
