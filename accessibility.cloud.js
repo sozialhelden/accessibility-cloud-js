@@ -78,7 +78,7 @@ window.AccessibilityCloud = {
 
   renderPlaces(element, places, related) {
     if (!$(element).length) {
-      console.error('Could not render results, element not found.');
+      // console.error('Could not render results, element not found.');
       return;
     }
     if (places && places.length) {

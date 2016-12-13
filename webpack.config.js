@@ -9,6 +9,11 @@ const config = {
   entry: [
     './accessibility.cloud.js',
   ],
+  module: {
+    loaders: [
+      { test: /\.js$/, loader: 'eslint-loader', exclude: /node_modules/ },
+    ],
+  },
   output: {
     filename: 'dist/accessibility.cloud.min.js',
   },
