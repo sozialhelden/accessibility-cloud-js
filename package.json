@@ -1,6 +1,6 @@
 {
   "name": "accessibility.cloud",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Fetches and shows places from accessibility.cloud on your website.",
   "author": "The accessibility.cloud team",
   "license": "MIT",
@@ -41,7 +41,7 @@
   },
   "scripts": {
     "start": "NODE_ENV=development ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base example/ --hot --inline --devtool eval --https --host 0.0.0.0",
-    "build": "./node_modules/webpack/bin/webpack.js",
+    "build": "./node_modules/webpack/bin/webpack.js && git add .",
     "test": "node -v",
     "preversion": "npm test",
     "version": "npm run build",
