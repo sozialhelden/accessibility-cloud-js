@@ -2,9 +2,7 @@ import Mustache from 'mustache';
 import humanizeString from 'humanize-string';
 
 function formatName(name) {
-  return name.replace(/([A-Z])/g, ' $1')
-             .replace(/^./, str => str.toUpperCase())
-             .replace(/^Rating /, '');
+  return humanizeString(name).replace(/^Rating /, '');
 }
 
 function formatValue(value) {
