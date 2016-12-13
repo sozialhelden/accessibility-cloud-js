@@ -57,12 +57,12 @@ const AccessibilityCloud = {
 
   resultsTemplate() {
     // eslint-disable-next-line no-multi-str
-    return '<ul class="ac-result-list" role="treegrid"> \
+    return `<ul class="ac-result-list" role="treegrid"> \
       {{#places}} \
         <li class="ac-result" role="gridcell" aria-expanded="false"> \
           {{#properties}} \
             <div class="ac-summary"> \
-              <img src="https://dl.dropboxusercontent.com/u/5503063/ac/icons/{{category}}.png" role="presentation"> \
+              <img src="${this.apiDomain}/icons/categories/{{category}}@2x.png" role="presentation"> \
               <header class="ac-result-name" role="heading">{{name}}</header> \
               <div class="ac-result-distance">{{formattedDistance}}</div> \
               <div class="ac-result-category">{{humanizedCategory}}</div> \
@@ -73,7 +73,7 @@ const AccessibilityCloud = {
           {{/properties}} \
         </li> \
       {{/places}} \
-    </ul>';
+    </ul>`;
   },
 
   renderPlaces(element, places, related) {
