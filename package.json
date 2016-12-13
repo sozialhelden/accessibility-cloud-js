@@ -41,10 +41,10 @@
   },
   "scripts": {
     "start": "NODE_ENV=development ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base example/ --hot --inline --devtool eval --https --host 0.0.0.0",
-    "build": "./node_modules/webpack/bin/webpack.js && git add .",
+    "build": "./node_modules/webpack/bin/webpack.js",
     "test": "node -v",
     "preversion": "npm test",
-    "version": "npm run build",
+    "version": "npm run build && cp dist/accessibility.cloud.min.js dist/accessibility.cloud-${npm_package_version}.min.js && git add .",
     "postversion": "npm test"
   }
 }
