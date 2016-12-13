@@ -31,7 +31,7 @@ function recursivelyRenderProperties(element) {
       if (key.startsWith('rating')) {
         return `<li class="ac-rating">${formatName(key)}: ${formatRating(parseFloat(value))}</li>`;
       }
-      return `<li>${formatName(key)}: ${formatValue(value)}</li>`;
+      return `<li class="ac-${typeof value}">${formatName(key)}: ${formatValue(value)}</li>`;
     });
     return `<ul class="ac-group">${listElements.join('')}</ul>`;
   }
