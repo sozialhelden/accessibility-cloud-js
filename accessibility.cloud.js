@@ -108,7 +108,7 @@ const AccessibilityCloud = {
           if (isAccessible(this)) {
             return 'Accessible with wheelchair';
           }
-          return 'NOT accessible with wheelchair';
+          return 'Not accessible with wheelchair';
         },
         sourceName() {
           const source = related.sources && related.sources[this.sourceId];
