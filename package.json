@@ -1,6 +1,6 @@
 {
   "name": "accessibility.cloud",
-  "version": "0.4.8",
+  "version": "0.4.9",
   "description": "Fetches and shows places from accessibility.cloud on your website.",
   "author": "The accessibility.cloud team",
   "license": "MIT",
@@ -52,7 +52,7 @@
     "build": "./node_modules/webpack/bin/webpack.js",
     "test": "node -v",
     "preversion": "npm test",
-    "version": "export WP_LOCALE=de_DE; npm run build && cp dist/accessibility.cloud.${WP_LOCALE}.min.js dist/accessibility.cloud.${WP_LOCALE}-${npm_package_version}.min.js && rm dist/accessibility.cloud.${WP_LOCALE}.min.js && git add .",
+    "version": "for locale_file in translations/accessibility-cloud.js-widget/*.po; do export locale=$( basename -s .po $locale_file ); echo \"Building $locale version...\"; export WP_LOCALE=$locale; npm run build && cp dist/accessibility.cloud.${locale}.min.js dist/accessibility.cloud.${locale}-${npm_package_version}.min.js && rm dist/accessibility.cloud.${locale}.min.js; done; git add .",
     "postversion": "npm test"
   }
 }
