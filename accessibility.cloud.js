@@ -1,13 +1,14 @@
 import Mustache from 'mustache';
 import humanizeString from 'humanize-string';
+import { t } from 'c-3po';
 
 function formatName(name) {
   return humanizeString(name).replace(/^Rating /, '');
 }
 
 function formatValue(value) {
-  if (value === true) return 'Yes';
-  if (value === false) return 'No';
+  if (value === true) return t`Yes`;
+  if (value === false) return t`No`;
   return value;
 }
 
@@ -72,7 +73,7 @@ const AccessibilityCloud = {
               <header class="ac-result-name" role="heading">{{name}}</header> \
               <div class="ac-result-distance">{{formattedDistance}}</div> \
               <div class="ac-result-category">{{humanizedCategory}}</div> \
-              <a href="{{infoPageUrl}}" class="ac-result-link">{{sourceName}}</a> \
+              {{#infoPageUrl}}<a href="{{infoPageUrl}}" class="ac-result-link">{{sourceName}}</a>{{/infoPageUrl}} \
               <div class="ac-result-accessibility-summary">{{accessibilitySummary}}</div> \
               <div class="ac-result-accessibility-details ac-hidden">{{{formattedAccessibility}}}</div> \
             </div> \
@@ -104,9 +105,9 @@ const AccessibilityCloud = {
         },
         accessibilitySummary() {
           if (isAccessible(this)) {
-            return 'Accessible with wheelchair';
+            return t`Accessible with wheelchair`;
           }
-          return 'Not accessible with wheelchair';
+          return t`Not accessible with wheelchair`;
         },
         sourceName() {
           const source = related.sources && related.sources[this.sourceId];
@@ -124,7 +125,7 @@ const AccessibilityCloud = {
           .first()
           .slideToggle());
     } else {
-      $(element).html('<div class="ac-no-results">No results.</div>');
+      $(element).html(`<div class="ac-no-results">${t`No results.`}</div>`);
     }
   },
 
@@ -138,7 +139,7 @@ const AccessibilityCloud = {
         (<a href="${licenseURL}">${(license.shortName || license.name)}</a>)`;
     });
     if (links.length) {
-      $(element).append(`<p class="ac-licenses">Source: ${links.join(', ')}</p>`);
+      $(element).append(`<p class="ac-licenses">${t`Source`}: ${links.join(', ')}</p>`);
     }
   },
 
@@ -153,7 +154,7 @@ const AccessibilityCloud = {
         );
       })
       .fail((error) => {
-        let message = 'No error message';
+        let message = t`Unknown error.`;
         if (error) {
           try {
             message = JSON.parse(error.responseText).error.reason;
@@ -161,7 +162,7 @@ const AccessibilityCloud = {
             message = `${error.statusText}<br>${error.responseText}`;
           }
         }
-        $(element).html(`<div class="ac-error">Could not load data:${message}</div>`);
+        $(element).html(`<div class="ac-error">${t`Could not load data`}:${message}</div>`);
       });
   },
 };

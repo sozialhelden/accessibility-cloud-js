@@ -1,0 +1,36 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=utf-8\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+#: accessibility.cloud.js:10
+msgid "Yes"
+msgstr ""
+
+#: accessibility.cloud.js:11
+msgid "No"
+msgstr ""
+
+#: accessibility.cloud.js:108
+msgid "Accessible with wheelchair"
+msgstr ""
+
+#: accessibility.cloud.js:110
+msgid "Not accessible with wheelchair"
+msgstr ""
+
+#: accessibility.cloud.js:128
+msgid "No results."
+msgstr ""
+
+#: accessibility.cloud.js:142
+msgid "Source"
+msgstr ""
+
+#: accessibility.cloud.js:157
+msgid "Unknown error."
+msgstr ""
+
+#: accessibility.cloud.js:165
+msgid "Could not load data"
+msgstr ""

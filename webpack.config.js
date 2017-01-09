@@ -5,17 +5,41 @@ const webpack = require('webpack');
 const BabiliPlugin = require('babili-webpack-plugin');
 const path = require('path');
 
+const locale = process.env.WP_LOCALE || 'en_US';
+
+const locales = require('./bin/locales');
+
+const c3poConfig = {
+  extract: { output: 'dist/translations.pot' },
+  resolve: locale ? { locale } : null,
+  locales,
+};
+
+const babelConfig = {
+  env: {
+    production: {
+      presets: ['babili'],
+    },
+  },
+  plugins: [['c-3po', c3poConfig]],
+};
+
 const config = {
   entry: [
     './accessibility.cloud.js',
   ],
   module: {
     loaders: [
-      { test: /\.js$/, loader: 'eslint-loader', exclude: /node_modules/ },
+      {
+        test: /\.jsx?$/,
+        exclude: /(node_modules|bower_components)/,
+        loader: 'babel-loader',
+        query: babelConfig,
+      },
     ],
   },
   output: {
-    filename: 'dist/accessibility.cloud.min.js',
+    filename: `dist/accessibility.cloud${locale ? `.${locale}` : ''}.min.js`,
     library: 'accessibility.cloud',
     libraryTarget: 'umd',
   },
@@ -41,6 +65,5 @@ const config = {
     hot: true,
   },
 };
-
 
 module.exports = config;

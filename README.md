@@ -70,3 +70,10 @@ This is the library's main file. It includes a few library and is built and mini
 - Run `npm run build` to create a minified build in the `dist/` directory
 - Open `dist/index.html` to test the functionality
 - Run `npm version [major|minor|patch]` to create a new library version
+
+
+## Translating
+
+Translations are created using [transifex](https://www.transifex.com/sozialhelden/accessibility-cloud/js-widget/). You can add translations by using [c3po](https://alexmost.gitbooks.io/c-3po-book/content/)'s functions in the code. The library works similar to gettext.
+
+When building with `npm run build`, a file with all strings is created in `dist/translations.pot`. You can push this file to transifex with `tx push -s dist/translations.pot`. When all strings are translated there, `tx pull -a` downloads the translations from transifex and stores them as `.po`-Files in the `translations/` directory.
