@@ -1,9 +1,12 @@
+/* global WP_LOCALE */
+
 import Mustache from 'mustache';
 import humanizeString from 'humanize-string';
 import { t } from 'c-3po';
 
-function formatName(name) {
-  return humanizeString(name).replace(/^Rating /, '');
+function formatName(name, properties) {
+  const string = properties[`${name}Localized`] || name;
+  return humanizeString(string).replace(/^Rating /, '');
 }
 
 function formatValue(value) {
@@ -18,25 +21,34 @@ function formatRating(rating) {
   return `<span class="stars">${stars}</span> <span class="numeric">${between0and5}/5</span>`;
 }
 
-function recursivelyRenderProperties(element) {
-  if ($.isArray(element)) {
-    return `<ul class="ac-list">${element.map(e => `<li>${recursivelyRenderProperties(e)}</li>`).join('')}</ul>`;
-  } else if ($.isPlainObject(element)) {
-    const listElements = $.map(element, (value, key) => {
+function recursivelyRenderProperties(properties) {
+  if ($.isArray(properties)) {
+    return `<ul class="ac-list">${properties.map(e => `<li>${recursivelyRenderProperties(e)}</li>`).join('')}</ul>`;
+  }
+
+  if ($.isPlainObject(properties)) {
+    const propertyStrings = $.map(properties, (value, key) => {
+      if (key.match(/Localized/)) {
+        return '';
+      }
+
+      const name = formatName(key, properties);
       if ($.isArray(value) || $.isPlainObject(value)) {
         if (key === 'areas' && value.length === 1) {
           return recursivelyRenderProperties(value[0]);
         }
-        return `<li class="ac-group"><header class='subtle'>${formatName(key)}</header> ${recursivelyRenderProperties(value)}</li>`;
+        return `<li class="ac-group"><header class='subtle'>${name}</header> ${recursivelyRenderProperties(value)}</li>`;
       }
       if (key.startsWith('rating')) {
-        return `<li class="ac-rating">${formatName(key)}: ${formatRating(parseFloat(value))}</li>`;
+        return `<li class="ac-rating">${name}: ${formatRating(parseFloat(value))}</li>`;
       }
-      return `<li class="ac-${typeof value}">${formatName(key)}: <span class='value'>${formatValue(value)}</span></li>`;
+      return `<li class="ac-${typeof value}">${name}: <span class='value'>${formatValue(value)}</span></li>`;
     });
-    return `<ul class="ac-group">${listElements.join('')}</ul>`;
+
+    return `<ul class="ac-group">${propertyStrings.join('')}</ul>`;
   }
-  return element;
+
+  return properties;
 }
 
 function isAccessible(place) {
@@ -51,7 +63,7 @@ const AccessibilityCloud = {
   getPlacesAround(parameters) {
     return $.ajax({
       dataType: 'json',
-      url: `${this.apiDomain}/place-infos?includeRelated=source`,
+      url: `${this.apiDomain}/place-infos?includeRelated=source&locale=${process.env.WP_LOCALE}`,
       data: parameters,
       headers: {
         Accept: 'application/json',
@@ -92,7 +104,7 @@ const AccessibilityCloud = {
       $(element).html(Mustache.render(this.resultsTemplate(), {
         places,
         humanizedCategory() {
-          return humanizeString(this.category);
+          return humanizeString(this.localizedCategory || this.category);
         },
         formattedDistance() {
           return `${Math.round(this.distance)}m`;

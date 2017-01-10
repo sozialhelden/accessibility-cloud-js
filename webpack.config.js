@@ -52,6 +52,7 @@ const config = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
+        WP_LOCALE: `'${locale}'`,
         NODE_ENV: process.env.NODE_ENV,
       },
     }),
