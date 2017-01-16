@@ -1,41 +1,39 @@
-# Translators:
-# Sebastian Felix Zappe <hypo@me.com>, 2017
+# 
 msgid ""
 msgstr ""
-"Last-Translator: Sebastian Felix Zappe <hypo@me.com>, 2017\n"
-"Language-Team: German (Germany) (https://www.transifex.com/sozialhelden/teams/67299/de_DE/)\n"
+"Language-Team: German (https://www.transifex.com/sozialhelden/teams/67299/de/)\n"
 "Content-Type: text/plain; charset=utf-8\n"
-"Language: de_DE\n"
+"Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: accessibility.cloud.js:13
 msgid "Yes"
-msgstr "Ja"
+msgstr ""
 
 #: accessibility.cloud.js:14
 msgid "No"
-msgstr "Nein"
+msgstr ""
 
 #: accessibility.cloud.js:120
 msgid "Accessible with wheelchair"
-msgstr "Rollstuhlgerecht"
+msgstr ""
 
 #: accessibility.cloud.js:122
 msgid "Not accessible with wheelchair"
-msgstr "Nicht rollstuhlgerecht"
+msgstr ""
 
 #: accessibility.cloud.js:140
 msgid "No results."
-msgstr "Keine Ergebnisse."
+msgstr ""
 
 #: accessibility.cloud.js:154
 msgid "Source"
-msgstr "Quelle"
+msgstr ""
 
 #: accessibility.cloud.js:169
 msgid "Unknown error."
-msgstr "Unbekannter Fehler."
+msgstr ""
 
 #: accessibility.cloud.js:177
 msgid "Could not load data"
-msgstr "Konnte Daten nicht laden."
+msgstr ""

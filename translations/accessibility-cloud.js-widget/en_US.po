@@ -6,34 +6,34 @@ msgstr ""
 "Language: en_US\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: accessibility.cloud.js:10
+#: accessibility.cloud.js:13
 msgid "Yes"
 msgstr ""
 
-#: accessibility.cloud.js:11
+#: accessibility.cloud.js:14
 msgid "No"
 msgstr ""
 
-#: accessibility.cloud.js:108
+#: accessibility.cloud.js:120
 msgid "Accessible with wheelchair"
 msgstr ""
 
-#: accessibility.cloud.js:110
+#: accessibility.cloud.js:122
 msgid "Not accessible with wheelchair"
 msgstr ""
 
-#: accessibility.cloud.js:128
+#: accessibility.cloud.js:140
 msgid "No results."
 msgstr ""
 
-#: accessibility.cloud.js:142
+#: accessibility.cloud.js:154
 msgid "Source"
 msgstr ""
 
-#: accessibility.cloud.js:157
+#: accessibility.cloud.js:169
 msgid "Unknown error."
 msgstr ""
 
-#: accessibility.cloud.js:165
+#: accessibility.cloud.js:177
 msgid "Could not load data"
 msgstr ""

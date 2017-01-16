@@ -50,7 +50,9 @@ This is a very short file. Its main purpose is to execute the following script:
 ```html
     <script>
       $(function() {
+        AccessibilityCloud = window['accessibility.cloud'].default;
         AccessibilityCloud.token = 'd48f457365247932472939ddff7aa'; // <-- Replace this token with your own
+        AccessibilityCloud.locale = 'en_US'; // <-- Replace this with the locale you want to use
         var element = document.querySelector('.ac-results');
         var parameters = { latitude: 40.728292, longitude: -73.9875852, accuracy: 10000, limit: 100 };
         AccessibilityCloud.loadAndRenderPlaces(element, parameters);
@@ -58,7 +60,7 @@ This is a very short file. Its main purpose is to execute the following script:
     </script>
 ```
 
-Note that it includes the API token, which you have to replace with the one you get on [accessibility.cloud](https://acloud.eu.meteorapp.com) for your own API client. It also includes an example request (in this case for places in Manhattan). For more information on the available parameters, refer to the [documentation on the API](https://github.com/sozialhelden//blob/master/docs/json-api.md).
+Note that the script above includes the API token, which you have to replace with the one you get on [accessibility.cloud](https://acloud.eu.meteorapp.com) for your own API client. It also includes an example request (in this case for places in Manhattan). For more information on the available parameters, refer to the [documentation on the API](https://github.com/sozialhelden//blob/master/docs/json-api.md).
 
 ### accessibility.cloud.js
 
@@ -74,6 +76,15 @@ This is the library's main file. It includes a few library and is built and mini
 
 ## Translating
 
-Translations are created using [transifex](https://www.transifex.com/sozialhelden/accessibility-cloud/js-widget/). You can add translations by using [c3po](https://alexmost.gitbooks.io/c-3po-book/content/)'s functions in the code. The library works similar to gettext.
+### Translation process
 
-When building with `npm run build`, a file with all strings is created in `dist/translations.pot`. You can push this file to transifex with `tx push -s dist/translations.pot`. When all strings are translated there, `tx pull -a` downloads the translations from transifex and stores them as `.po`-Files in the `translations/` directory.
+Translations are created using [transifex](https://www.transifex.com/sozialhelden/accessibility-cloud/js-widget/).
+
+You can add translations by using [c3po](https://alexmost.gitbooks.io/c-3po-book/content/)'s `t` function in the code. The library works similar to gettext, but template string insertion and plurals are not supported (yet).
+
+New translations are automatically synced to transifex when you build a new version with `npm run build` or when you create a new version with `npm version [major|minor|patch]`.
+
+### How translation syncing works internally
+
+- Pushing translations: When building with `npm run build`, the C3PO library creates a PO template file with all found strings from our source code in `dist/translations.pot`. This file is pushed to transifex with `tx push -s dist/translations.pot`.
+- Pulling translations: When all strings are translated there, you can build a new version with `npm version`, which runs `tx pull -a`. This downloads the translations from transifex and stores them as `.po`-Files in the `translations/` directory. The build process extracts the strings from there and stores them in `translations.js`. This ES6 module contains all translations as JS object-structure.

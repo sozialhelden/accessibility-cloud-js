@@ -5,7 +5,7 @@ const webpack = require('webpack');
 const BabiliPlugin = require('babili-webpack-plugin');
 const path = require('path');
 
-const locale = process.env.WP_LOCALE || 'en_US';
+const locale = process.env.WP_LOCALE;
 
 const locales = require('./bin/locales');
 
@@ -52,7 +52,7 @@ const config = {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
-        WP_LOCALE: `'${locale}'`,
+        WP_LOCALE: locale ? `'${locale}'` : 'undefined',
         NODE_ENV: process.env.NODE_ENV,
       },
     }),

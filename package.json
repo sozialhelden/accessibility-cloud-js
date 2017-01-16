@@ -1,6 +1,6 @@
 {
   "name": "accessibility.cloud",
-  "version": "1.0.0",
+  "version": "1.2.4",
   "description": "Fetches and shows places from accessibility.cloud on your website.",
   "author": "The accessibility.cloud team",
   "license": "MIT",
@@ -20,6 +20,7 @@
   ],
   "dependencies": {
     "c-3po": "0.0.4",
+    "gettext-parser": "^1.2.2",
     "humanize-string": "^1.0.1",
     "mustache": "^2.3.0",
     "which": "^1.2.12"
@@ -48,11 +49,15 @@
     "which": "^1.2.12"
   },
   "scripts": {
-    "start": "NODE_ENV=development ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base example/ --hot --inline --devtool eval --https --host 0.0.0.0",
-    "build": "./node_modules/webpack/bin/webpack.js",
+    "start": "NODE_ENV=development ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base dist/ --hot --inline --devtool eval --https --host 127.0.0.1",
+    "clean": "rm dist/accessibility.cloud*.js",
+    "build-without-push": "./node_modules/webpack/bin/webpack.js",
+    "build": "npm run build-without-push; npm run push-translations; npm run pull-translations",
     "test": "node -v",
     "preversion": "npm test",
-    "version": "for locale_file in translations/accessibility-cloud.js-widget/*.po; do export locale=$( basename -s .po $locale_file ); echo \"Building $locale version...\"; export WP_LOCALE=$locale; npm run build && cp dist/accessibility.cloud.${locale}.min.js dist/accessibility.cloud.${locale}-${npm_package_version}.min.js; done; git add .",
+    "push-translations": "echo '\\nPushing new translations to transifex...\\n'; WP_LOCALE=en_US  npm run build-without-push; tx push -s",
+    "pull-translations": "echo '\\nPulling new translations from transifex...\\n'; tx pull -a; node ./bin/generate-translations.js",
+    "version": "npm run clean && npm run build; cp dist/accessibility.cloud.min.js dist/accessibility.cloud.${npm_package_version}.min.js; for locale_file in translations/accessibility-cloud.js-widget/*_*.po; do locale=$( basename -s .po $locale_file ); echo \"\\n\\nBuilding $locale version...\"; WP_LOCALE=$locale npm run build-without-push && mv dist/accessibility.cloud.${locale}.min.js dist/accessibility.cloud.${locale}-${npm_package_version}.min.js; done; git add .",
     "postversion": "npm test"
   }
 }

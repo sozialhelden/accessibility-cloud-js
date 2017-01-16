@@ -1,8 +1,9 @@
-/* global WP_LOCALE */
-
 import Mustache from 'mustache';
 import humanizeString from 'humanize-string';
-import { t } from 'c-3po';
+import { t as translateUsingC3PO } from 'c-3po';
+import { t as translateUsingGeneratedTranslations } from './translate';
+
+const t = process.env.WP_LOCALE ? translateUsingC3PO : translateUsingGeneratedTranslations;
 
 function formatName(name, properties) {
   const string = properties[`${name}Localized`] || name;
@@ -58,12 +59,16 @@ function isAccessible(place) {
 }
 
 const AccessibilityCloud = {
+  getLocale() {
+    return process.env.WP_LOCALE || this.locale;
+  },
+
   apiDomain: 'https://www.accessibility.cloud',
 
   getPlacesAround(parameters) {
     return $.ajax({
       dataType: 'json',
-      url: `${this.apiDomain}/place-infos?includeRelated=source&locale=${process.env.WP_LOCALE}`,
+      url: `${this.apiDomain}/place-infos?includeRelated=source&locale=${this.getLocale()}`,
       data: parameters,
       headers: {
         Accept: 'application/json',
