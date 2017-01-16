@@ -57,7 +57,7 @@
     "preversion": "npm test",
     "push-translations": "echo '\\nPushing new translations to transifex...\\n'; WP_LOCALE=en_US  npm run build-without-push; tx push -s",
     "pull-translations": "echo '\\nPulling new translations from transifex...\\n'; tx pull -a; node ./bin/generate-translations.js",
-    "version": "npm run clean && npm run build; cp dist/accessibility.cloud.min.js dist/accessibility.cloud.${npm_package_version}.min.js; for locale_file in translations/accessibility-cloud.js-widget/*_*.po; do locale=$( basename -s .po $locale_file ); echo \"\\n\\nBuilding $locale version...\"; WP_LOCALE=$locale npm run build-without-push && mv dist/accessibility.cloud.${locale}.min.js dist/accessibility.cloud.${locale}-${npm_package_version}.min.js; done; git add .",
+    "version": "npm run clean && npm run build; cp dist/accessibility.cloud.min.js dist/accessibility.cloud.${npm_package_version}.min.js; for locale_file in translations/accessibility-cloud.js-widget/*_*.po; do locale=$( basename -s .po $locale_file ); echo \"\\n\\nBuilding $locale version...\"; WP_LOCALE=$locale npm run build-without-push && mv dist/accessibility.cloud.${locale}.min.js dist/accessibility.cloud.${npm_package_version}-${locale}.min.js; done; git add .",
     "postversion": "npm test"
   }
 }
