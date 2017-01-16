@@ -150,8 +150,8 @@ const AccessibilityCloud = {
     const links = Object.keys(sources).map((sourceId) => {
       const source = sources[sourceId];
       const license = licenses[source.licenseId];
-      const licenseURL = `${this.apiDomain}/browse/licenses/${license._id}`;
-      const sourceURL = source.originWebsiteURL || `${this.apiDomain}/browse/sources/${source._id}`;
+      const licenseURL = `${this.apiDomain}/licenses/${license._id}`;
+      const sourceURL = source.originWebsiteURL || `${this.apiDomain}/sources/${source._id}`;
       return `<a href="${sourceURL}">${(source.shortName || source.name)}</a>
         (<a href="${licenseURL}">${(license.shortName || license.name)}</a>)`;
     });
