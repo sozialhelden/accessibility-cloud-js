@@ -9,14 +9,17 @@ function translate(string, locale) {
   const localeWithoutCountry = locale.replace(/_[A-Z][A-Z]$/);
   const localeHasCountry = locale !== localeWithoutCountry;
   const localeWithDefaultCountry = localeHasCountry ? locale : findLocaleWithCountry(locale);
+  const defaultLocale = 'en_US';
 
   const translation = translations[locale] || {};
   const translationWithoutCountry = translations[localeWithoutCountry] || {};
   const translationWithDefaultCountry = translations[localeWithDefaultCountry] || {};
+  const translationWithDefaultLocale = translations[defaultLocale] || {};
 
   return translation[string] ||
     translationWithoutCountry[string] ||
     translationWithDefaultCountry[string] ||
+    translationWithDefaultLocale ||
     string;
 }
 
