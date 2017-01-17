@@ -16,11 +16,13 @@ function translate(string, locale) {
   const translationWithDefaultCountry = translations[localeWithDefaultCountry] || {};
   const translationWithDefaultLocale = translations[defaultLocale] || {};
 
-  return translation[string] ||
+  const result = translation[string] ||
     translationWithoutCountry[string] ||
     translationWithDefaultCountry[string] ||
-    translationWithDefaultLocale ||
+    translationWithDefaultLocale[string] ||
     string;
+
+  return result;
 }
 
 // Note that we don't support template strings for now.
