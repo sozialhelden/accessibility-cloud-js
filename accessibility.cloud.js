@@ -90,7 +90,7 @@ const AccessibilityCloud = {
               <header class="ac-result-name" role="heading">{{name}}</header> \
               <div class="ac-result-distance">{{formattedDistance}}</div> \
               <div class="ac-result-category">{{humanizedCategory}}</div> \
-              {{#infoPageUrl}}<a href="{{infoPageUrl}}" class="ac-result-link">{{sourceName}}</a>{{/infoPageUrl}} \
+              {{{infoPageLink}}} \
               <div class="ac-result-accessibility-summary">{{accessibilitySummary}}</div> \
               <div class="ac-result-accessibility-details ac-hidden">{{{formattedAccessibility}}}</div> \
             </div> \
@@ -126,9 +126,11 @@ const AccessibilityCloud = {
           }
           return t`Not accessible with wheelchair`;
         },
-        sourceName() {
+        infoPageLink() {
           const source = related.sources && related.sources[this.sourceId];
-          return source && (source.shortName || source.name);
+          const sourceName = source && (source.shortName || source.name);
+          if (!this.infoPageUrl || !sourceName) { return ''; }
+          return `<a href="${this.infoPageUrl}" class="ac-result-link">${sourceName}</a>`;
         },
       }));
 
