@@ -51,7 +51,7 @@
   "scripts": {
     "start": "NODE_ENV=development ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base dist/ --hot --inline --devtool eval --https --host 127.0.0.1",
     "clean": "rm dist/accessibility.cloud*.js",
-    "build-without-push": "./node_modules/webpack/bin/webpack.js",
+    "build-without-push": "./node_modules/webpack/bin/webpack.js -p",
     "build": "npm run build-without-push; npm run push-translations; npm run pull-translations",
     "test": "node -v",
     "preversion": "npm test",

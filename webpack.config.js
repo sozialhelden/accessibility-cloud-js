@@ -2,7 +2,6 @@
 /* eslint-disable import/no-unresolved */
 
 const webpack = require('webpack');
-const BabiliPlugin = require('babili-webpack-plugin');
 const path = require('path');
 
 const locale = process.env.WP_LOCALE;
@@ -16,11 +15,7 @@ const c3poConfig = {
 };
 
 const babelConfig = {
-  env: {
-    production: {
-      presets: ['babili'],
-    },
-  },
+  presets: ['es2015'],
   plugins: [['c-3po', c3poConfig]],
 };
 
@@ -56,7 +51,6 @@ const config = {
         NODE_ENV: process.env.NODE_ENV,
       },
     }),
-    new BabiliPlugin({}),
   ],
   devServer: {
     historyApiFallback: true,
