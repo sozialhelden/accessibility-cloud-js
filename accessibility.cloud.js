@@ -1,8 +1,10 @@
 import Mustache from 'mustache';
 import humanizeString from 'humanize-string';
 import { t as translateUsingC3PO } from 'c-3po';
-import { t as translateUsingGeneratedTranslations } from './translate';
+import { t as translateUsingGeneratedTranslations, setGlobalLocale } from './translate';
 
+// If the `WP_LOCALE` environment variable is set, C3PO gets all strings from the source code
+// in the build process.
 const t = process.env.WP_LOCALE ? translateUsingC3PO : translateUsingGeneratedTranslations;
 
 function formatName(name, properties) {
@@ -58,24 +60,56 @@ function isAccessible(place) {
     place.accessibility.accessibleWith.wheelchair;
 }
 
-const AccessibilityCloud = {
+export default class AccessibilityCloud {
+  constructor(options) {
+    const defaults = {
+      apiDomain: 'https://www.accessibility.cloud',
+      locale: process.env.WP_LOCALE,
+    };
+    const opts = Object.assign(defaults, options);
+    if (!opts.apiDomain || !opts.apiDomain.match(/^https?:\/\//)) {
+      throw new Error('Please supply a valid API domain.');
+    }
+    if (!opts.locale || !opts.locale.match(/[a-z]{2}(_[A-Z]{2})?/)) {
+      throw new Error('Please supply a valid locale.');
+    }
+    if (!opts.token || typeof opts.token !== 'string') {
+      throw new Error('Please supply a valid app or user token.');
+    }
+
+    this.options = opts;
+
+    if (typeof setGlobalLocale !== 'undefined') {
+      setGlobalLocale(this.getLocale());
+    }
+  }
+
   getLocale() {
-    return process.env.WP_LOCALE || this.locale;
-  },
+    return process.env.WP_LOCALE || this.options.locale;
+  }
 
-  apiDomain: 'https://www.accessibility.cloud',
+  /**
+   * Calls the accessibility.cloud JSON API to get available PoIs.
+   *
+   * The given parameters are passed to the API's GET /place-infos endpoint.
+   * More documentation is here:
+   * https://github.com/sozialhelden/accessibility-cloud/blob/master/docs/json-api.md#get-place-infos
+   */
 
-  getPlacesAround(parameters) {
+  getPlacesAround(parameters, callback) {
+    const noop = () => {};
     return $.ajax({
       dataType: 'json',
-      url: `${this.apiDomain}/place-infos?includeRelated=source&locale=${this.getLocale()}`,
+      url: `${this.options.apiDomain}/place-infos?includeRelated=source&locale=${this.getLocale()}`,
       data: parameters,
       headers: {
         Accept: 'application/json',
-        'X-Token': this.token,
+        'X-Token': this.options.token,
       },
-    });
-  },
+    })
+    .done(callback || noop)
+    .fail(callback || noop);
+  }
 
   resultsTemplate() {
     // eslint-disable-next-line no-multi-str
@@ -84,7 +118,7 @@ const AccessibilityCloud = {
         {{#properties}} \
           <li class="ac-result {{isAccessibleClass}}" role="gridcell" aria-expanded="false"> \
             <div class="ac-summary"> \
-              <img src="${this.apiDomain}/icons/categories/{{category}}.svg"
+              <img src="${this.options.apiDomain}/icons/categories/{{category}}.svg"
                 role="presentation"
                 class="ac-result-icon"> \
               <header class="ac-result-name" role="heading">{{name}}</header> \
@@ -98,7 +132,7 @@ const AccessibilityCloud = {
         {{/properties}} \
       {{/places}} \
     </ul>`;
-  },
+  }
 
   renderPlaces(element, places, related) {
     if (!$(element).length) {
@@ -146,23 +180,36 @@ const AccessibilityCloud = {
     } else {
       $(element).html(`<div class="ac-no-results">${t`No results.`}</div>`);
     }
-  },
+  }
 
   renderSourcesAndLicenses(element, sources, licenses) {
     const links = Object.keys(sources).map((sourceId) => {
       const source = sources[sourceId];
       const license = licenses[source.licenseId];
-      const licenseURL = `${this.apiDomain}/licenses/${license._id}`;
-      const sourceURL = source.originWebsiteURL || `${this.apiDomain}/sources/${source._id}`;
+      const licenseURL = `${this.options.apiDomain}/licenses/${license._id}`;
+      const sourceURL = source.originWebsiteURL ||
+         `${this.options.apiDomain}/sources/${source._id}`;
       return `<a href="${sourceURL}">${(source.shortName || source.name)}</a>
         (<a href="${licenseURL}">${(license.shortName || license.name)}</a>)`;
     });
     if (links.length) {
       $(element).append(`<p class="ac-licenses">${t`Source`}: ${links.join(', ')}</p>`);
     }
-  },
+  }
 
-  loadAndRenderPlaces(element, parameters) {
+  /**
+   * Calls the accessibility.cloud JSON API to get available PoIs. The PoIs are rendered as a
+   * list in the given HTML element (this also accepts a jQuery selector).
+   *
+   * The given parameters are passed to the API's GET /place-infos endpoint.
+   * More documentation is here:
+   * https://github.com/sozialhelden/accessibility-cloud/blob/master/docs/json-api.md#get-place-infos
+   *
+   * The function returns the XHR request. You can optionally pass a callback in NodeJS-style.
+   */
+
+  // eslint-disable-next-line no-unused-vars
+  loadAndRenderPlaces(element, parameters, callback = (error, results) => {}) {
     return this.getPlacesAround(parameters)
       .done((response) => {
         this.renderPlaces(element, response.features, response.related);
@@ -171,19 +218,17 @@ const AccessibilityCloud = {
           response.related.sources,
           response.related.licenses,
         );
+        callback(null, response);
       })
-      .fail((error) => {
+      .fail((xhr) => {
         let message = t`Unknown error.`;
-        if (error) {
-          try {
-            message = JSON.parse(error.responseText).error.reason;
-          } catch (e) {
-            message = `${error.statusText}<br>${error.responseText}`;
-          }
+        try {
+          message = JSON.parse(xhr.responseText).error.reason;
+        } catch (e) {
+          message = `${xhr.statusText}<br>${xhr.responseText}`;
         }
         $(element).html(`<div class="ac-error">${t`Could not load data`}:${message}</div>`);
+        callback(new Error(message));
       });
-  },
-};
-
-export default AccessibilityCloud;
+  }
+}

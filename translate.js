@@ -27,8 +27,13 @@ function translate(string, locale) {
 
 // Note that we don't support template strings for now.
 
+let locale = 'en_US';
+export function setGlobalLocale(newLocale) {
+  locale = newLocale;
+}
+
 // eslint-disable-next-line import/prefer-default-export
 export function t(arg) {
   // eslint-disable-next-line no-undef
-  return translate(arg, AccessibilityCloud.locale);
+  return translate(arg, locale);
 }

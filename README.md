@@ -48,19 +48,37 @@ To balance readibility and code size, we're using the [Mustache template engine]
 This is a very short file. Its main purpose is to execute the following script:
 
 ```html
-    <script>
-      $(function() {
-        AccessibilityCloud = window['accessibility.cloud'].default;
-        AccessibilityCloud.token = 'd48f457365247932472939ddff7aa'; // <-- Replace this token with your own
-        AccessibilityCloud.locale = 'en_US'; // <-- Replace this with the locale you want to use
-        var element = document.querySelector('.ac-results');
-        var parameters = { latitude: 40.728292, longitude: -73.9875852, accuracy: 10000, limit: 100 };
-        AccessibilityCloud.loadAndRenderPlaces(element, parameters);
-      });
-    </script>
+<script>
+  $(function() {
+    var AccessibilityCloud = window['accessibility.cloud'].default;
+    var accessibilityCloud = new AccessibilityCloud({
+      token: '7f039b60e27a4d02b13c5ad79fbe9d7b', // <-- Replace this token with your own
+      locale: 'de' // <-- Replace this with the locale you want to use
+    });
+
+    var element = document.querySelector('.ac-results');
+
+    // These parameters are passed to the JSON API's GET /place-infos endpoint.
+    // More documentation is here:
+    // https://github.com/sozialhelden/accessibility-cloud/blob/master/docs/json-api.md#get-place-infos
+    var parameters = {
+      latitude: 40.728292,
+      longitude: -73.9875852,
+      accuracy: 10000,
+      limit: 100,
+    };
+
+    accessibilityCloud.loadAndRenderPlaces(element, parameters, console.log);
+  });
+</script>
 ```
 
-Note that the script above includes the API token, which you have to replace with the one you get on [accessibility.cloud](https://acloud.eu.meteorapp.com) for your own API client. It also includes an example request (in this case for places in Manhattan). For more information on the available parameters, refer to the [documentation on the API](https://github.com/sozialhelden//blob/master/docs/json-api.md).
+Note that the script above includes the API token, which you have to replace with the one you get on [accessibility.cloud](https://acloud.eu.meteorapp.com) for your own API client. It also includes an example request (in this case for places in Manhattan).
+
+The `loadAndRenderPlaces` function renders the results in the given element. It optionally accepts a callback in NodeJS `function (error, result) { … }` style.
+
+For more information on the available parameters, refer to the [documentation on the API](https://github.com/sozialhelden//blob/master/docs/json-api.md).
+
 
 ### accessibility.cloud.js
 

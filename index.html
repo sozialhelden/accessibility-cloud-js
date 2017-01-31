@@ -20,12 +20,25 @@
 
     <script>
       $(function() {
-        AccessibilityCloud = window['accessibility.cloud'].default;
-        AccessibilityCloud.token = '7f039b60e27a4d02b13c5ad79fbe9d7b';
-        AccessibilityCloud.locale = 'de';
+        var AccessibilityCloud = window['accessibility.cloud'].default;
+        var accessibilityCloud = new AccessibilityCloud({
+          token: '7f039b60e27a4d02b13c5ad79fbe9d7b', // <-- Replace this token with your own
+          locale: 'de' // <-- Replace this with the locale you want to use
+        });
+
         var element = document.querySelector('.ac-results');
-        var parameters = { latitude: 40.728292, longitude: -73.9875852, accuracy: 10000, limit: 100 };
-        AccessibilityCloud.loadAndRenderPlaces(element, parameters);
+
+        // These parameters are passed to the JSON API's GET /place-infos endpoint.
+        // More documentation is here:
+        // https://github.com/sozialhelden/accessibility-cloud/blob/master/docs/json-api.md#get-place-infos
+        var parameters = {
+          latitude: 40.728292,
+          longitude: -73.9875852,
+          accuracy: 10000,
+          limit: 100,
+        };
+
+        accessibilityCloud.loadAndRenderPlaces(element, parameters, console.log);
       });
     </script>
   </body>
