@@ -54,10 +54,10 @@ function recursivelyRenderProperties(properties) {
   return properties;
 }
 
-function isAccessible(place) {
-  return place.accessibility &&
-    place.accessibility.accessibleWith &&
-    place.accessibility.accessibleWith.wheelchair;
+function isAccessible(properties) {
+  return properties.accessibility &&
+    properties.accessibility.accessibleWith &&
+    properties.accessibility.accessibleWith.wheelchair;
 }
 
 export default class AccessibilityCloud {
@@ -113,24 +113,22 @@ export default class AccessibilityCloud {
 
   resultsTemplate() {
     // eslint-disable-next-line no-multi-str
-    return `<ul class="ac-result-list" role="treegrid"> \
-      {{#places}} \
-        {{#properties}} \
-          <li class="ac-result {{isAccessibleClass}}" role="gridcell" aria-expanded="false"> \
-            <div class="ac-summary"> \
-              <img src="${this.options.apiDomain}/icons/categories/{{category}}.svg"
-                role="presentation"
-                class="ac-result-icon"> \
-              <header class="ac-result-name" role="heading">{{name}}</header> \
-              <div class="ac-result-distance">{{formattedDistance}}</div> \
-              <div class="ac-result-category">{{humanizedCategory}}</div> \
-              {{{infoPageLink}}} \
-              <div class="ac-result-accessibility-summary">{{accessibilitySummary}}</div> \
-              <div class="ac-result-accessibility-details ac-hidden">{{{formattedAccessibility}}}</div> \
-            </div> \
-          </li> \
-        {{/properties}} \
-      {{/places}} \
+    return `<ul class="ac-result-list" role="treegrid">
+      {{#places}}
+        <li class="ac-result {{isAccessibleClass}}" role="gridcell" aria-expanded="false">
+          <div class="ac-summary">
+            <img src="${this.options.apiDomain}/icons/categories/{{properties.category}}.svg"
+              role="presentation"
+              class="ac-result-icon">
+            <div class="ac-result-distance"><a href='{{mapsHref}}'>{{{formattedDistance}}}</a></div>
+            <div class="ac-result-name" role="heading">{{properties.name}}</div>
+            <div class="ac-result-category">{{humanizedCategory}}</div>
+            {{{infoPageLink}}}
+            <div class="ac-result-accessibility-summary">{{accessibilitySummary}}</div>
+            <div class="ac-result-accessibility-details ac-hidden">{{{formattedAccessibility}}}</div>
+          </div>
+        </li>
+      {{/places}}
     </ul>`;
   }
 
@@ -139,32 +137,55 @@ export default class AccessibilityCloud {
       // console.error('Could not render results, element not found.');
       return;
     }
+    const locale = this.getLocale();
     if (places && places.length) {
       $(element).html(Mustache.render(this.resultsTemplate(), {
         places,
         humanizedCategory() {
-          return humanizeString(this.localizedCategory || this.category);
+          return humanizeString(this.properties.localizedCategory || this.properties.category);
+        },
+        mapsHref() {
+          if (!this.geometry || !this.geometry.coordinates || this.geometry.type !== 'Point') {
+            return '#';
+          }
+          const [longitude, latitude] = this.geometry.coordinates;
+          return `https://www.openstreetmap.org/?mlat=${latitude}&mlon=${longitude}&zoom=20`;
         },
         formattedDistance() {
-          return `${Math.round(this.distance)}m`;
+          const isImperial = locale === 'en' || locale === 'en_UK' || locale === 'en_US';
+          const distance = this.properties.distance;
+          let value = Math.round(distance);
+          let unit = 'm';
+          if (isImperial) {
+            const distanceInMiles = 0.00062137 * distance;
+            if (distanceInMiles < 0.1) {
+              const distanceInYards = 1.0936 * distance;
+              value = Math.round(distanceInYards);
+              unit = 'yd';
+            } else {
+              value = String(0.1 * Math.round(distanceInMiles * 10)).replace(/(\.\d)\d+/, '$1');
+              unit = 'mi';
+            }
+          }
+          return `<span class='ac-result-distance-value'>${value}</span> <span class='ac-result-distance-unit'>${unit}</span>`;
         },
         formattedAccessibility() {
-          return recursivelyRenderProperties(this.accessibility);
+          return recursivelyRenderProperties(this.properties.accessibility);
         },
         isAccessibleClass() {
-          return isAccessible(this) ? 'is-accessible' : '';
+          return isAccessible(this.properties) ? 'is-accessible' : '';
         },
         accessibilitySummary() {
-          if (isAccessible(this)) {
+          if (isAccessible(this.properties)) {
             return t`Accessible with wheelchair`;
           }
           return t`Not accessible with wheelchair`;
         },
         infoPageLink() {
-          const source = related.sources && related.sources[this.sourceId];
+          const source = related.sources && related.sources[this.properties.sourceId];
           const sourceName = source && (source.shortName || source.name);
-          if (!this.infoPageUrl || !sourceName) { return ''; }
-          return `<a href="${this.infoPageUrl}" class="ac-result-link">${sourceName}</a>`;
+          if (!this.properties.infoPageUrl || !sourceName) { return ''; }
+          return `<a href="${this.properties.infoPageUrl}" class="ac-result-link">${sourceName}</a>`;
         },
       }));
 
