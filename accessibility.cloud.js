@@ -97,11 +97,15 @@ export default class AccessibilityCloud {
    */
 
   getPlacesAround(parameters, callback) {
+    const stringifiedParameters = {};
+    Object.keys(parameters).forEach((key) => {
+      stringifiedParameters[key] = parameters[key].toString();
+    });
     const noop = () => {};
     return $.ajax({
       dataType: 'json',
-      data: parameters,
       url: `${this.options.apiBaseUrl}/place-infos?includeRelated=source&locale=${this.getLocale()}`,
+      data: stringifiedParameters,
       headers: {
         Accept: 'application/json',
         'X-Token': this.options.token,
