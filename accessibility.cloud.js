@@ -63,11 +63,11 @@ function isAccessible(properties) {
 export default class AccessibilityCloud {
   constructor(options) {
     const defaults = {
-      apiDomain: 'https://www.accessibility.cloud',
+      apiBaseUrl: 'https://www.accessibility.cloud',
       locale: process.env.WP_LOCALE,
     };
     const opts = Object.assign(defaults, options);
-    if (!opts.apiDomain || !opts.apiDomain.match(/^https?:\/\//)) {
+    if (!opts.apiBaseUrl || !opts.apiBaseUrl.match(/^https?:\/\//)) {
       throw new Error('Please supply a valid API domain.');
     }
     if (!opts.locale || !opts.locale.match(/[a-z]{2}(_[A-Z]{2})?/)) {
@@ -100,8 +100,8 @@ export default class AccessibilityCloud {
     const noop = () => {};
     return $.ajax({
       dataType: 'json',
-      url: `${this.options.apiDomain}/place-infos?includeRelated=source&locale=${this.getLocale()}`,
       data: parameters,
+      url: `${this.options.apiBaseUrl}/place-infos?includeRelated=source&locale=${this.getLocale()}`,
       headers: {
         Accept: 'application/json',
         'X-Token': this.options.token,
@@ -117,7 +117,7 @@ export default class AccessibilityCloud {
       {{#places}}
         <li class="ac-result {{isAccessibleClass}}" role="gridcell" aria-expanded="false">
           <div class="ac-summary">
-            <img src="${this.options.apiDomain}/icons/categories/{{properties.category}}.svg"
+            <img src="${this.options.apiBaseUrl}/icons/categories/{{properties.category}}.svg"
               role="presentation"
               class="ac-result-icon">
             <div class="ac-result-distance"><a href='{{mapsHref}}'>{{{formattedDistance}}}</a></div>
@@ -207,9 +207,9 @@ export default class AccessibilityCloud {
     const links = Object.keys(sources).map((sourceId) => {
       const source = sources[sourceId];
       const license = licenses[source.licenseId];
-      const licenseURL = `${this.options.apiDomain}/licenses/${license._id}`;
+      const licenseURL = `${this.options.apiBaseUrl}/licenses/${license._id}`;
       const sourceURL = source.originWebsiteURL ||
-         `${this.options.apiDomain}/sources/${source._id}`;
+         `${this.options.apiBaseUrl}/sources/${source._id}`;
       return `<a href="${sourceURL}">${(source.shortName || source.name)}</a>
         (<a href="${licenseURL}">${(license.shortName || license.name)}</a>)`;
     });
