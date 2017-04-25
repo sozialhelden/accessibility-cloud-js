@@ -9,6 +9,7 @@ This is a small and easy-to-use client-side JS library that helps with…
 Keep in mind that this library is still under development and likely to change.
 
 
+
 ## Running the example
 
 Right now the sourcecode of the example integration resides inside the [ repository](https://github.com/sozialhelden//tree/master/public/js-example). To get it running you have to go through the following steps:
@@ -35,6 +36,7 @@ Right now the sourcecode of the example integration resides inside the [ reposit
 - Open `dist/index.html` in your web-browser. The result should look similar to this: ![js-api-client-example](http://i.imgur.com/kfk0cMS.png)
 
 
+
 ## Comments on the code
 
 To balance readibility and code size, we're using the [Mustache template engine](https://github.com/janl/mustache.js) (10k) and jQuery. To not duplicate libraries on your side, how you integrate jQuery is up to you (`index.html` contains an example how). The only relevant files to use in your project are `dist/accessibility.cloud.min.js` (our JS library), `accessibility.cloud.css` (the CSS -- you can customize this to fit your own project's styling). Check `dist/index.html` for an example how to include `accessibility.cloud.js`.
@@ -47,7 +49,6 @@ This is a very short file. Its main purpose is to execute the following script:
 ```html
 <script>
   $(function() {
-    var AccessibilityCloud = window['accessibility.cloud'].default;
     var accessibilityCloud = new AccessibilityCloud({
       token: '7f039b60e27a4d02b13c5ad79fbe9d7b', // <-- Replace this token with your own
       locale: 'de' // <-- Replace this with the locale you want to use
@@ -91,17 +92,18 @@ This is the library's main file. It includes a few library and is built and mini
 - Run `yarn version [major|minor|patch]` to create a new library version
 
 
+
 ## Translating
 
 ### Translation process
 
 Translations are created using [transifex](https://www.transifex.com/sozialhelden/accessibility-cloud/js-widget/).
 
-You can add translations by using [c3po](https://alexmost.gitbooks.io/c-3po-book/content/)'s `t` function in the code. The library works similar to gettext, but template string insertion and plurals are not supported (yet).
+You can add translations by using [c3po](https://alexmost.gitbooks.io/c-3po-book/content/)'s `t` function in the code. The API works similar to gettext, but template string insertion and plurals are not supported (yet).
 
-New translations are automatically synced to transifex when you build a new version with `yarn build` or when you create a new version with `yarn version [major|minor|patch]`.
+When you build a new version with `yarn build` or when you create a new version with `yarn version [major|minor|patch]`, translations are automatically synced with transifex.
 
 ### How translation syncing works internally
 
-- Pushing translations: When building with `yarn build`, the C3PO library creates a PO template file with all found strings from our source code in `dist/translations.pot`. This file is pushed to transifex with `tx push -s dist/translations.pot`.
-- Pulling translations: When all strings are translated there, you can build a new version with `yarn version`, which runs `tx pull -a`. This downloads the translations from transifex and stores them as `.po`-Files in the `translations/` directory. The build process extracts the strings from there and stores them in `translations.js`. This ES6 module contains all translations as JS object-structure.
+- Pushing translations: When building with `yarn build`, the C3PO library creates a PO template file (`dist/translations.pot`) with all found strings used as arguments to the `t` function. This file is pushed to transifex with `tx push -s dist/translations.pot`.
+- Pulling translations: When all strings are translated there, you can build a new version with `yarn build`, which runs `tx pull -a`. This downloads the translations from transifex and stores them as `.po`-Files in the `src/translations/` directory. The build process extracts the strings from there and stores them in `translations.js`. This ES6 module contains all translations as JS object-structure.
