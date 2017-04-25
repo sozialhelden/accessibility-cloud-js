@@ -24,6 +24,10 @@ msgstr "Rollstuhlgerecht"
 msgid "Not accessible with wheelchair"
 msgstr "Nicht rollstuhlgerecht"
 
+#: accessibility.cloud.js:205
+msgid "Partially accessible with wheelchair"
+msgstr "Teilweise rollstuhlgerecht"
+
 #: accessibility.cloud.js:140
 msgid "No results."
 msgstr "Keine Ergebnisse."
