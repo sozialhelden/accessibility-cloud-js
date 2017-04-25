@@ -1,14 +1,14 @@
-body.ac-example {
-  font-family: 'Source Sans', 'Helvetica Neue', sans-serif;
-}
-
 .ac-result-list, .ac-list {
   list-style-type: none;
   margin: 0;
   padding: 0;
   font-weight: 300;
-  color: #666;
+  color: #444;
   line-height: 1.3;
+}
+
+.ac-result-list a:hover {
+  font-weight: 400;
 }
 
 .ac-summary {
@@ -50,11 +50,29 @@ body.ac-example {
 
 .ac-result-accessibility {
   white-space: pre;
-  font-family: 'Helvetica Neue', sans-serif;
 }
 
 .ac-result-accessibility-summary {
   font-weight: bolder;
+}
+
+.ac-result-accessibility-summary:hover .ac-info-icon {
+  opacity: 0.8;
+}
+
+.ac-result-extra-info {
+  font-size: 0.75em;
+  line-height: 1.25em;
+  opacity: 0.8;
+  margin: 0.5em 8em 0.5em 0;
+}
+
+.ac-info-icon {
+  opacity: 0.3;
+  height: 1em;
+  margin-left: 0.2em;
+  margin-bottom: -0.17em;
+  transition: opacity 0.3s ease-out;
 }
 
 .ac-result-accessibility-details > dl.ac-group {
@@ -115,8 +133,28 @@ dt[data-key="entrances"] + dd {
   list-style: none;
 }
 
-.ac-hidden {
+.ac-result .ac-result-accessibility-details {
   display: none;
+}
+
+@keyframes ac-fadein {
+  0% {
+    opacity: 0;
+    max-height: 0;
+  }
+  100% {
+    opacity: 1;
+    max-height: 500px;
+  }
+}
+
+.ac-result[aria-expanded="true"] .ac-result-accessibility-details {
+  display: block;
+  animation: ac-fadein 0.5s ease-out;
+}
+
+.ac-result[aria-expanded="true"] .ac-info-icon {
+  opacity: 0;
 }
 
 .ac-error {

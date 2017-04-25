@@ -2,7 +2,7 @@
 host = https://www.transifex.com
 
 [accessibility-cloud.js-widget]
-file_filter = translations/accessibility-cloud.js-widget/<lang>.po
+file_filter = src/translations/accessibility-cloud.js-widget/<lang>.po
 source_lang = en
 source_file = dist/translations.pot
 type = PO

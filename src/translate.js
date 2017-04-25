@@ -1,15 +1,30 @@
 import translations from './translations/accessibility-cloud.js-widget/translations';
 
+const defaultLocale = 'en_US';
+
 function findLocaleWithCountry(localeWithoutCountry) {
   const regexp = new RegExp(`^${localeWithoutCountry}_`);
   return Object.keys(translations).find(locale => locale.match(regexp));
+}
+
+export function translateWithObject(object, locale) {
+  const localeWithoutCountry = locale.replace(/_[A-Z][A-Z]$/);
+  const localeHasCountry = locale !== localeWithoutCountry;
+  const localeWithDefaultCountry = localeHasCountry ? locale : findLocaleWithCountry(locale);
+
+  const result = object[locale] ||
+    object[localeWithoutCountry] ||
+    object[localeWithDefaultCountry] ||
+    object[defaultLocale] ||
+    `(No translation for ${locale})`;
+
+  return result;
 }
 
 function translate(string, locale) {
   const localeWithoutCountry = locale.replace(/_[A-Z][A-Z]$/);
   const localeHasCountry = locale !== localeWithoutCountry;
   const localeWithDefaultCountry = localeHasCountry ? locale : findLocaleWithCountry(locale);
-  const defaultLocale = 'en_US';
 
   const translation = translations[locale] || {};
   const translationWithoutCountry = translations[localeWithoutCountry] || {};
@@ -27,7 +42,7 @@ function translate(string, locale) {
 
 // Note that we don't support template strings for now.
 
-let locale = 'en_US';
+let locale = defaultLocale;
 export function setGlobalLocale(newLocale) {
   locale = newLocale;
 }

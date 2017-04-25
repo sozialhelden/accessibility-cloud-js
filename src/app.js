@@ -1,7 +1,9 @@
 import Mustache from 'mustache';
 import humanizeString from 'humanize-string';
+import get from 'lodash/get';
 import { t as translateUsingC3PO } from 'c-3po';
-import { t as translateUsingGeneratedTranslations, setGlobalLocale } from './translate';
+import { t as translateUsingGeneratedTranslations, setGlobalLocale, translateWithObject } from './translate';
+import './app.css';
 
 // If the `WP_LOCALE` environment variable is set, C3PO gets all strings from the source code
 // in the build process.
@@ -19,9 +21,9 @@ function formatValue(value) {
 }
 
 function formatRating(rating) {
-  const between0and5 = Math.floor(Math.min(1, Math.max(0, rating)) * 5);
-  const stars = '★★★★★'.slice(5 - between0and5);
-  return `<span aria-label='${between0and5} stars'><span class="stars" aria-hidden='true'>${stars}</span> <span class="numeric" aria-hidden='true'>${between0and5}/5</span></span>`;
+  const between1and5 = Math.floor(Math.min(1, Math.max(0, rating)) * 5);
+  const stars = '★★★★★'.slice(5 - between1and5);
+  return `<span aria-label='${between1and5} stars'><span class="stars" aria-hidden='true'>${stars}</span> <span class="numeric" aria-hidden='true'>${between1and5}/5</span></span>`;
 }
 
 function recursivelyRenderProperties(properties) {
@@ -54,18 +56,14 @@ function recursivelyRenderProperties(properties) {
 }
 
 function isAccessible(properties) {
-  return properties.accessibility &&
-    properties.accessibility.accessibleWith &&
-    properties.accessibility.accessibleWith.wheelchair;
+  return get(properties, 'accessibility.accessibleWith.wheelchair');
 }
 
 function isPartiallyAccessible(properties) {
-  return properties.accessibility &&
-    properties.accessibility.partiallyAccessibleWith &&
-    properties.accessibility.partiallyAccessibleWith.wheelchair;
+  return get(properties, 'accessibility.isPartiallyAccessible.wheelchair');
 }
 
-export default class AccessibilityCloud {
+export default class App {
   constructor(options) {
     const defaults = {
       apiBaseUrl: 'https://www.accessibility.cloud',
@@ -120,6 +118,13 @@ export default class AccessibilityCloud {
     .fail(callback || noop);
   }
 
+
+  infoIcon() {
+    return `<svg class="ac-info-icon" width="12px" height="12px" viewBox="470 252 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <path d="M477,266 C473.134007,266 470,262.865993 470,259 C470,255.134007 473.134007,252 477,252 C480.865993,252 484,255.134007 484,259 C484,262.865993 480.865993,266 477,266 Z M475.281943,263.191051 L478.686736,263.191051 L478.686736,261.659174 L477.881662,261.659174 L477.881662,257.398991 L475.281943,257.398991 L475.281943,258.930868 L476.154107,258.930868 L476.154107,261.659174 L475.281943,261.659174 L475.281943,263.191051 Z M476.064654,255.531667 C476.064654,255.669573 476.089813,255.799092 476.14013,255.920227 C476.190447,256.041361 476.260332,256.146653 476.349785,256.236106 C476.439238,256.325559 476.54453,256.396375 476.665664,256.448556 C476.786799,256.500737 476.918181,256.526828 477.059815,256.526828 C477.193995,256.526828 477.320718,256.500737 477.439989,256.448556 C477.55926,256.396375 477.66362,256.325559 477.753073,256.236106 C477.842526,256.146653 477.913342,256.041361 477.965523,255.920227 C478.017704,255.799092 478.043795,255.669573 478.043795,255.531667 C478.043795,255.39376 478.017704,255.264241 477.965523,255.143107 C477.913342,255.021972 477.842526,254.91668 477.753073,254.827227 C477.66362,254.737774 477.55926,254.666958 477.439989,254.614777 C477.320718,254.562596 477.193995,254.536506 477.059815,254.536506 C476.918181,254.536506 476.786799,254.562596 476.665664,254.614777 C476.54453,254.666958 476.439238,254.737774 476.349785,254.827227 C476.260332,254.91668 476.190447,255.021972 476.14013,255.143107 C476.089813,255.264241 476.064654,255.39376 476.064654,255.531667 Z" id="Combined-Shape" stroke="none" fill="#000000" fill-rule="evenodd"></path>
+    </svg>`;
+  }
+
   resultsTemplate() {
     // eslint-disable-next-line no-multi-str
     return `<ul class="ac-result-list">
@@ -129,17 +134,13 @@ export default class AccessibilityCloud {
             <img src="${this.options.apiBaseUrl}/icons/categories/{{properties.category}}.svg"
               role="presentation"
               class="ac-result-icon">
-            <div class="ac-result-distance"><a href='{{mapsHref}}'>{{{formattedDistance}}}</a></div>
-            <div class="ac-result-name" role="heading">{{properties.name}}</div>
             {{{infoPageLink}}}
+            <div class="ac-result-name" role="heading">{{properties.name}}</div>
             <div class="ac-result-category">{{humanizedCategory}}</div>
-            <div class="ac-result-accessibility-summary">{{accessibilitySummary}}{{#extraInfo}} (i){{/extraInfo}}</div>
-            <div class="ac-result-accessibility-details ac-hidden" id="ac-details-{{properties._id}}">
-              {{#extraInfo}}
-                <header class='ac-result-extra-info'>
-                  {{this}}
-                </header>
-              {{/extraInfo}}
+            <div class="ac-result-distance"><a href='{{mapsHref}}'>{{{formattedDistance}}}</a></div>
+            <div class="ac-result-accessibility-summary">{{accessibilitySummary}}{{#extraInfo}} ${this.infoIcon()}{{/extraInfo}}</div>
+            <div class="ac-result-accessibility-details" aria-hidden="true" id="ac-details-{{properties._id}}">
+              <header class='ac-result-extra-info'>{{extraInfo}}</header>
               {{{formattedAccessibility}}}
             </div>
           </div>
@@ -149,13 +150,13 @@ export default class AccessibilityCloud {
   }
 
   renderPlaces(element, places, related) {
-    if (!$(element).length) {
+    if (!element) {
       // console.error('Could not render results, element not found.');
       return;
     }
     const locale = this.getLocale();
     if (places && places.length) {
-      $(element).html(Mustache.render(this.resultsTemplate(), {
+      element.innerHTML = Mustache.render(this.resultsTemplate(), {
         places,
         humanizedCategory() {
           if (!this.properties) { return null; }
@@ -191,7 +192,8 @@ export default class AccessibilityCloud {
         },
         extraInfo() {
           const source = related.sources && related.sources[this.properties.sourceId];
-          return source && source.additionalAccessibilityInformation;
+          const translations = get(source, 'translations.additionalAccessibilityInformation');
+          return translations ? translateWithObject(translations, locale) : null;
         },
         isAccessibleClass() {
           return isAccessible(this.properties) ? 'is-accessible' : '';
@@ -211,20 +213,18 @@ export default class AccessibilityCloud {
           if (!this.properties.infoPageUrl || !sourceName) { return ''; }
           return `<a href="${this.properties.infoPageUrl}" class="ac-result-link">${sourceName}</a>`;
         },
-      }));
+      });
 
       // prevent slideToggle for link
-      $('li.ac-result a').click(event => event.stopPropagation());
+      const links = element.querySelectorAll('li.ac-result a');
+      links.forEach(link => link.addEventListener('click', event => event.stopPropagation()));
 
-      $('li.ac-result').click((event) => {
-        $(event.currentTarget.querySelector('.ac-result-accessibility-details'))
-          .slideToggle({
-            done() {
-              const newValue = String(event.currentTarget.getAttribute('aria-expanded') !== 'true');
-              event.currentTarget.setAttribute('aria-expanded', newValue);
-            },
-          });
-      });
+      const results = element.querySelectorAll('li.ac-result');
+      results.forEach(result => result.addEventListener('click', (event) => {
+        const details = result.querySelector('.ac-result-accessibility-details');
+        result.setAttribute('aria-expanded', String(result.getAttribute('aria-expanded') !== 'true'));
+        details.setAttribute('aria-hidden', String(result.getAttribute('aria-hidden') !== 'true'));
+      }));
     } else {
       $(element).html(`<div class="ac-no-results">${t`No results.`}</div>`);
     }
@@ -280,5 +280,3 @@ export default class AccessibilityCloud {
       });
   }
 }
-
-window.AccessibilityCloud = AccessibilityCloud;

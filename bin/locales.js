@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const locales = {};
-const localeDirPath = path.join(__dirname, '../translations/accessibility-cloud.js-widget');
+const localeDirPath = path.join(__dirname, '../src/translations/accessibility-cloud.js-widget');
 
 fs.readdirSync(localeDirPath)
   .forEach((fileName) => {
