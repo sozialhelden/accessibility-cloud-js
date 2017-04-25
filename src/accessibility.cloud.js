@@ -8,8 +8,8 @@ import { t as translateUsingGeneratedTranslations, setGlobalLocale } from './tra
 const t = process.env.WP_LOCALE ? translateUsingC3PO : translateUsingGeneratedTranslations;
 
 function formatName(name, properties) {
-  const string = properties[`${name}Localized`] || name;
-  return humanizeString(string).replace(/^Rating /, '');
+  const string = properties[`${name}Localized`] || humanizeString(name);
+  return string.replace(/^Rating /, '');
 }
 
 function formatValue(value) {
@@ -21,7 +21,7 @@ function formatValue(value) {
 function formatRating(rating) {
   const between0and5 = Math.floor(Math.min(1, Math.max(0, rating)) * 5);
   const stars = '★★★★★'.slice(5 - between0and5);
-  return `<span class="stars">${stars}</span> <span class="numeric">${between0and5}/5</span>`;
+  return `<span aria-label='${between0and5} stars'><span class="stars" aria-hidden='true'>${stars}</span> <span class="numeric" aria-hidden='true'>${between0and5}/5</span></span>`;
 }
 
 function recursivelyRenderProperties(properties) {
@@ -34,21 +34,20 @@ function recursivelyRenderProperties(properties) {
       if (key.match(/Localized/)) {
         return '';
       }
-
       const name = formatName(key, properties);
       if ($.isArray(value) || $.isPlainObject(value)) {
-        if (key === 'areas' && value.length === 1) {
-          return recursivelyRenderProperties(value[0]);
-        }
-        return `<li class="ac-group"><header class='subtle'>${name}</header> ${recursivelyRenderProperties(value)}</li>`;
+        // if (key === 'areas' && value.length === 1) {
+        //   return recursivelyRenderProperties(value[0]);
+        // }
+        return `<dt data-key='${key}'>${name}</dt><dd>${recursivelyRenderProperties(value)}</dd>`;
       }
       if (key.startsWith('rating')) {
-        return `<li class="ac-rating">${name}: ${formatRating(parseFloat(value))}</li>`;
+        return `<dt class="ac-rating">${name}:</dt> <dd>${formatRating(parseFloat(value))}</dd>`;
       }
-      return `<li class="ac-${typeof value}">${name}: <span class='value'>${formatValue(value)}</span></li>`;
+      return `<dt class="ac-${typeof value}">${name}:</dt> <dd class='ac-${typeof value}'>${formatValue(value)}</dd>`;
     });
 
-    return `<ul class="ac-group">${propertyStrings.join('')}</ul>`;
+    return `<dl class="ac-group">${propertyStrings.join('')}</dl>`;
   }
 
   return properties;
@@ -58,6 +57,12 @@ function isAccessible(properties) {
   return properties.accessibility &&
     properties.accessibility.accessibleWith &&
     properties.accessibility.accessibleWith.wheelchair;
+}
+
+function isPartiallyAccessible(properties) {
+  return properties.accessibility &&
+    properties.accessibility.partiallyAccessibleWith &&
+    properties.accessibility.partiallyAccessibleWith.wheelchair;
 }
 
 export default class AccessibilityCloud {
@@ -117,19 +122,26 @@ export default class AccessibilityCloud {
 
   resultsTemplate() {
     // eslint-disable-next-line no-multi-str
-    return `<ul class="ac-result-list" role="treegrid">
+    return `<ul class="ac-result-list">
       {{#places}}
-        <li class="ac-result {{isAccessibleClass}}" role="gridcell" aria-expanded="false">
+        <li class="ac-result {{isAccessibleClass}}" aria-controls="ac-details-{{properties._id}}" aria-expanded="false">
           <div class="ac-summary">
             <img src="${this.options.apiBaseUrl}/icons/categories/{{properties.category}}.svg"
               role="presentation"
               class="ac-result-icon">
             <div class="ac-result-distance"><a href='{{mapsHref}}'>{{{formattedDistance}}}</a></div>
             <div class="ac-result-name" role="heading">{{properties.name}}</div>
-            <div class="ac-result-category">{{humanizedCategory}}</div>
             {{{infoPageLink}}}
-            <div class="ac-result-accessibility-summary">{{accessibilitySummary}}</div>
-            <div class="ac-result-accessibility-details ac-hidden">{{{formattedAccessibility}}}</div>
+            <div class="ac-result-category">{{humanizedCategory}}</div>
+            <div class="ac-result-accessibility-summary">{{accessibilitySummary}}{{#extraInfo}} (i){{/extraInfo}}</div>
+            <div class="ac-result-accessibility-details ac-hidden" id="ac-details-{{properties._id}}">
+              {{#extraInfo}}
+                <header class='ac-result-extra-info'>
+                  {{this}}
+                </header>
+              {{/extraInfo}}
+              {{{formattedAccessibility}}}
+            </div>
           </div>
         </li>
       {{/places}}
@@ -146,7 +158,8 @@ export default class AccessibilityCloud {
       $(element).html(Mustache.render(this.resultsTemplate(), {
         places,
         humanizedCategory() {
-          return humanizeString(this.properties.localizedCategory || this.properties.category);
+          if (!this.properties) { return null; }
+          return this.properties.localizedCategory || humanizeString(this.properties.category);
         },
         mapsHref() {
           if (!this.geometry || !this.geometry.coordinates || this.geometry.type !== 'Point') {
@@ -176,12 +189,19 @@ export default class AccessibilityCloud {
         formattedAccessibility() {
           return recursivelyRenderProperties(this.properties.accessibility);
         },
+        extraInfo() {
+          const source = related.sources && related.sources[this.properties.sourceId];
+          return source && source.additionalAccessibilityInformation;
+        },
         isAccessibleClass() {
           return isAccessible(this.properties) ? 'is-accessible' : '';
         },
         accessibilitySummary() {
           if (isAccessible(this.properties)) {
             return t`Accessible with wheelchair`;
+          }
+          if (isPartiallyAccessible(this.properties)) {
+            return t`Partially accessible with wheelchair`;
           }
           return t`Not accessible with wheelchair`;
         },
@@ -196,12 +216,15 @@ export default class AccessibilityCloud {
       // prevent slideToggle for link
       $('li.ac-result a').click(event => event.stopPropagation());
 
-      $('li.ac-result').click(event =>
-        $(event.target)
-          .parent()
-          .find('.ac-result-accessibility-details')
-          .first()
-          .slideToggle());
+      $('li.ac-result').click((event) => {
+        $(event.currentTarget.querySelector('.ac-result-accessibility-details'))
+          .slideToggle({
+            done() {
+              const newValue = String(event.currentTarget.getAttribute('aria-expanded') !== 'true');
+              event.currentTarget.setAttribute('aria-expanded', newValue);
+            },
+          });
+      });
     } else {
       $(element).html(`<div class="ac-no-results">${t`No results.`}</div>`);
     }
@@ -257,3 +280,5 @@ export default class AccessibilityCloud {
       });
   }
 }
+
+window.AccessibilityCloud = AccessibilityCloud;

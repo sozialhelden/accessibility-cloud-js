@@ -19,6 +19,10 @@ msgstr ""
 msgid "Not accessible with wheelchair"
 msgstr ""
 
+#: accessibility.cloud.js:205
+msgid "Partially accessible with wheelchair"
+msgstr ""
+
 #: accessibility.cloud.js:140
 msgid "No results."
 msgstr ""

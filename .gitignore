@@ -1,3 +1,8 @@
 node_modules
 npm-debug.log
-/dist/accessibility.cloud.de_DE.min.js
+/public/accessibility.cloud.de_DE.min.js
+/public/accessibility.cloud.en_US.min.js
+/public/accessibility.cloud.min.js.map
+**/.DS_Store
+versions
+coverage

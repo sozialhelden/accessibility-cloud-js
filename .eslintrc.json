@@ -20,7 +20,11 @@
   },
   "parser": "babel-eslint",
   "parserOptions": {
+    "allowImportExportEverywhere": true,
     "ecmaVersion": 6,
-    "sourceType": "module"
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
   }
 }

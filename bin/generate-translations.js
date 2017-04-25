@@ -3,7 +3,7 @@ const path = require('path');
 const locales = require('./locales');
 const gettextParser = require('gettext-parser');
 
-const translationsDirName = path.join(__dirname, '../translations/accessibility-cloud.js-widget');
+const translationsDirName = path.join(__dirname, '../src/translations/accessibility-cloud.js-widget');
 const translationsFileName = path.join(translationsDirName, 'translations.js');
 const parsedPOFiles = {};
 

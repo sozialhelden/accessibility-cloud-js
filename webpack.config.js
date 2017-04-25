@@ -1,64 +1,70 @@
-/* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable import/no-unresolved */
-
+const { resolve } = require('path');
 const webpack = require('webpack');
-const path = require('path');
 
-const locale = process.env.WP_LOCALE;
+module.exports = {
+  context: resolve(__dirname, 'src'),
 
-const locales = require('./bin/locales');
-
-const c3poConfig = {
-  extract: { output: 'dist/translations.pot' },
-  resolve: locale ? { locale } : null,
-  locales,
-};
-
-const babelConfig = {
-  presets: ['es2015'],
-  plugins: [['c-3po', c3poConfig]],
-};
-
-const config = {
   entry: [
-    './accessibility.cloud.js',
+    'react-hot-loader/patch',
+    // activate HMR for React
+
+    'webpack-dev-server/client?http://localhost:8080',
+    // bundle the client for webpack-dev-server
+    // and connect to the provided endpoint
+
+    'webpack/hot/only-dev-server',
+    // bundle the client for hot reloading
+    // only- means to only hot reload for successful updates
+
+    './index.js',
+    // the entry point of our app
   ],
+  output: {
+    filename: 'bundle.js',
+    // the output bundle
+
+    path: resolve(__dirname, 'dist'),
+
+    publicPath: '/',
+    // necessary for HMR to know where to load the hot update chunks
+  },
+
+  devtool: 'inline-source-map',
+
+  devServer: {
+    hot: true,
+    // enable HMR on the server
+
+    contentBase: resolve(__dirname, 'dist'),
+    // match the output path
+
+    publicPath: '/',
+    // match the output `publicPath`
+  },
+
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
-        exclude: /(node_modules|bower_components)/,
-        loader: 'babel-loader',
-        query: babelConfig,
+        use: ['babel-loader'],
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.styl$/,
+        use: ['style-loader', 'css-loader', 'stylus-loader'],
       },
     ],
   },
-  output: {
-    filename: `dist/accessibility.cloud${locale ? `.${locale}` : ''}.min.js`,
-    library: 'accessibility.cloud',
-    libraryTarget: 'umd',
-  },
-  resolve: {
-    modules: [
-      path.join(__dirname, 'src'),
-      'node_modules',
-    ],
-  },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        WP_LOCALE: locale ? `'${locale}'` : 'undefined',
-        NODE_ENV: process.env.NODE_ENV,
-      },
-    }),
-  ],
-  devServer: {
-    historyApiFallback: true,
-    publicPath: '/public/',
-    index: '/public/',
-    inline: true,
-    hot: true,
-  },
-};
 
-module.exports = config;
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    // enable HMR globally
+
+    new webpack.NamedModulesPlugin(),
+    // prints more readable module names in the browser console on HMR updates
+  ],
+};
