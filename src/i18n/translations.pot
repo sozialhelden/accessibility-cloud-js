@@ -3,6 +3,18 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
+#: src/App.jsx:107
+msgid "No results."
+msgstr ""
+
+#: src/App.jsx:108
+msgid "Loading..."
+msgstr ""
+
+#: src/components/XHRComponent.jsx:100
+msgid "HTTP error from server."
+msgstr ""
+
 #: src/components/Result.jsx:39
 msgid "Accessible with wheelchair"
 msgstr ""
@@ -15,18 +27,34 @@ msgstr ""
 msgid "Not accessible with wheelchair"
 msgstr ""
 
-#: src/components/InfoPageLink.jsx:18
-msgid "Show '${ props.properties.name }' on ${ sourceName }"
+#: src/components/AccessibilityDetails.jsx:14
+msgid "Yes"
+msgstr ""
+
+#: src/components/AccessibilityDetails.jsx:15
+msgid "No"
 msgstr ""
 
 #: src/components/InfoPageLink.jsx:18
 msgid "Show ‘${ props.properties.name }’ on ${ sourceName }"
 msgstr ""
 
-#: src/App.jsx:107
-msgid "No results."
+#: src/components/Distance.jsx:37
+msgid "meters"
 msgstr ""
 
-#: src/App.jsx:108
-msgid "Loading..."
+#: src/components/Distance.jsx:44
+msgid "yards"
+msgstr ""
+
+#: src/components/Distance.jsx:48
+msgid "miles"
+msgstr ""
+
+#: src/components/Distance.jsx:54
+msgid "Show on OpenStreetMap"
+msgstr ""
+
+#: src/components/Distance.jsx:55
+msgid "${ value } ${ unit } from here."
 msgstr ""
