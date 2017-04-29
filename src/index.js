@@ -1,27 +1,19 @@
-import App from './app';
+// eslint-disable react/jsx-filename-extension
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import './index.css';
 
-export default class AccessibilityCloud {
-  constructor(options) {
-    this.options = options;
-  }
-
-  loadAndRenderPlaces(element, parameters, callback) {
-    const render = (AppConstructor) => {
-      new AppConstructor(this.options).loadAndRenderPlaces(element, parameters, callback);
-    };
-
-    render(App);
-
-    // Hot Module Replacement API
-    if (module.hot) {
-      module.hot.accept('./app.js', () => {
-        render(require('./app').default); // eslint-disable-line global-require
-      });
-      module.hot.accept('./index.js', () => {
-        window.location.reload();
-      });
-    }
-  }
-}
-
-window.AccessibilityCloud = AccessibilityCloud;
+ReactDOM.render(
+  React.createElement(App, {
+    token: '11abe59ec926dfc81926545400f9f2b5', // <-- Replace this token with your own
+    locale: 'de', // <-- Replace this with the locale you want to use
+    requestParameters: {
+      latitude: 48.866667,
+      longitude: 2.333333,
+      accuracy: 10000,
+      limit: 100,
+    },
+  }),
+  document.getElementById('root'),
+);
