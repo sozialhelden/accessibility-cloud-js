@@ -8,20 +8,16 @@ msgstr ""
 "Language: en_US\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/components/Distance.jsx:37
-msgid "meters"
+#: src/App.jsx:107
+msgid "No results."
 msgstr ""
 
-#: src/components/Distance.jsx:44
-msgid "yards"
+#: src/App.jsx:108
+msgid "Loading..."
 msgstr ""
 
-#: src/components/Distance.jsx:48
-msgid "miles"
-msgstr ""
-
-#: src/components/Distance.jsx:54 src/components/Distance.jsx:57
-msgid "Show on OpenStreetMap"
+#: src/components/XHRComponent.jsx:100
+msgid "HTTP error from server."
 msgstr ""
 
 #: src/components/Result.jsx:39
@@ -44,18 +40,26 @@ msgstr "Yes"
 msgid "No"
 msgstr "No"
 
+#: src/components/InfoPageLink.jsx:18
+msgid "Show ‘${ props.properties.name }’ on ${ sourceName }"
+msgstr ""
+
+#: src/components/Distance.jsx:37
+msgid "meters"
+msgstr ""
+
+#: src/components/Distance.jsx:44
+msgid "yards"
+msgstr ""
+
+#: src/components/Distance.jsx:48
+msgid "miles"
+msgstr ""
+
+#: src/components/Distance.jsx:54
+msgid "Show on OpenStreetMap"
+msgstr ""
+
 #: src/components/Distance.jsx:55
 msgid "${ value } ${ unit } from here."
-msgstr ""
-
-#: src/components/InfoPageLink.jsx:18 src/components/InfoPageLink.jsx:20
-msgid "Show on ${ sourceName }"
-msgstr ""
-
-#: src/components/InfoPageLink.jsx:18 src/components/InfoPageLink.jsx:20
-msgid "Show ${ props.properties.name } on ${ sourceName }"
-msgstr ""
-
-#: src/components/Result.jsx:148
-msgid "This is a ${ categoryName }."
 msgstr ""

@@ -8,21 +8,17 @@ msgstr ""
 "Language: de_DE\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/components/Distance.jsx:37
-msgid "meters"
-msgstr "Meter"
+#: src/App.jsx:107
+msgid "No results."
+msgstr "Keine Ergebnisse."
 
-#: src/components/Distance.jsx:44
-msgid "yards"
-msgstr "Yard"
+#: src/App.jsx:108
+msgid "Loading..."
+msgstr "Lädt…"
 
-#: src/components/Distance.jsx:48
-msgid "miles"
-msgstr "Meilen"
-
-#: src/components/Distance.jsx:54 src/components/Distance.jsx:57
-msgid "Show on OpenStreetMap"
-msgstr "In OpenStreetMap anzeigen"
+#: src/components/XHRComponent.jsx:100
+msgid "HTTP error from server."
+msgstr "HTTP-Fehler vom Server."
 
 #: src/components/Result.jsx:39
 msgid "Accessible with wheelchair"
@@ -44,18 +40,26 @@ msgstr "Ja"
 msgid "No"
 msgstr "Nein"
 
+#: src/components/InfoPageLink.jsx:18
+msgid "Show ‘${ props.properties.name }’ on ${ sourceName }"
+msgstr "Zeige ,${ props.properties.name }‘ auf ${ sourceName }"
+
+#: src/components/Distance.jsx:37
+msgid "meters"
+msgstr "Meter"
+
+#: src/components/Distance.jsx:44
+msgid "yards"
+msgstr "Yard"
+
+#: src/components/Distance.jsx:48
+msgid "miles"
+msgstr "Meilen"
+
+#: src/components/Distance.jsx:54
+msgid "Show on OpenStreetMap"
+msgstr "In OpenStreetMap anzeigen"
+
 #: src/components/Distance.jsx:55
 msgid "${ value } ${ unit } from here."
 msgstr "${ value } ${ unit } von hier."
-
-#: src/components/InfoPageLink.jsx:18 src/components/InfoPageLink.jsx:20
-msgid "Show on ${ sourceName }"
-msgstr "In ${ sourceName } anzeigen"
-
-#: src/components/InfoPageLink.jsx:18 src/components/InfoPageLink.jsx:20
-msgid "Show ${ props.properties.name } on ${ sourceName }"
-msgstr "${ props.properties.name } in ${ sourceName } anzeigen"
-
-#: src/components/Result.jsx:148
-msgid "This is a ${ categoryName }."
-msgstr "Dies ist ein ${ categoryName }"
