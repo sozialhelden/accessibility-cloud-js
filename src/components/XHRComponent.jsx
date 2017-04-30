@@ -4,33 +4,10 @@ import React from 'react';
 import { t } from 'c-3po';
 
 
-// type DefaultProps = {
-//   a: number,
-// };
-
-// type Props = XHRProps & XHRState & {
-//   a: number,
-//   b: number,
-// };
-
-// type State = {
-//   isOn: boolean,
-// };
-
-// class Something extends React.Component<DefaultProps, Props, State> {
-//   state: State;
-//   props: Props;
-//   static defaultProps: DefaultProps = { a: 1 };
-// }
-
-// const x = <Something b={4} url={'asd'} response={"asd"} />;
-// const SomethingWithXHR = createXHRComponent(Something);
-// const y = <SomethingWithXHR b={4} url={'asd'}/>;
-
-
 function getDisplayName(WrappedComponent: ReactClass<any>): string {
   return WrappedComponent.displayName || WrappedComponent.name || 'Component';
 }
+
 
 const defaultProps = {
   method: 'GET',
@@ -41,7 +18,9 @@ const defaultProps = {
   isRequested: false,
 };
 
+
 type XHRDefaultProps = typeof defaultProps;
+
 
 export type XHRState = {
   response: ?{},
@@ -51,6 +30,7 @@ export type XHRState = {
   isLoading: boolean,
 };
 
+
 export type XHRProps = {
   url: string,
   query?: { [string]: string },
@@ -59,7 +39,9 @@ export type XHRProps = {
   method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
 };
 
+
 export type WrappedComponentType<D, P> = Class<React$Component<D, P & XHRState, any>>;
+
 
 export default function createXHRComponent<D: {}, P: XHRProps>(
   WrappedComponent: WrappedComponentType<D, P>,
