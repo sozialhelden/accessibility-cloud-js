@@ -9,7 +9,6 @@ This is a small and easy-to-use client-side JS library that helps with…
 Keep in mind that this library is still under development and likely to change.
 
 
-
 ## Running the example
 
 Right now the sourcecode of the example integration resides inside the [ repository](https://github.com/sozialhelden//tree/master/public/js-example). To get it running you have to go through the following steps:
@@ -33,7 +32,6 @@ Right now the sourcecode of the example integration resides inside the [ reposit
 - Clone or [download the repository](https://github.com/sozialhelden/accessibility-cloud-js/archive/master.zip).
 - Open `index.html` with your favorite text editor and replace the *API token* around line 22 with the one you copied from the API token page.
 - Open `index.html` in your web-browser. The result should look similar to this: ![Widget demo screenshot](./docs/widget-demo.png)
-
 
 
 
@@ -90,7 +88,9 @@ This is the library's main file. It includes a few library and is built and mini
 - Run `yarn version [major|minor|patch]` to create a new library version
 - This is an ‘ejected’ `create-react-app` application. [Read more about `create-react-app`](https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md) to understand the app's structure and internal build processes.
 
-## Translating
+
+
+## Adding / changing translations
 
 ### Translation process
 
