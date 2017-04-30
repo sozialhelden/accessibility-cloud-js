@@ -120,7 +120,8 @@ export default class Result extends Component<*, Props, State> {
       className={`ac-result ${isAccessible(properties) ? 'is-accessible' : ''}`}
       aria-controls={isExpandable ? id : null}
       aria-expanded={isExpandable ? this.state.isExpanded : null}
-      onClick={isExpandable ? event => this.toggle(event) : null}
+      onTouchStart={isExpandable ? event => this.toggle(event) : null}
+      onMouseDown={isExpandable ? event => this.toggle(event) : null}
       onBlur={event => this.collapse(event)}
       onKeyDown={event => this.handleKeyDown(event)}
       role="listitem"
