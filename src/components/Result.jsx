@@ -3,6 +3,7 @@
 
 import React, { Component } from 'react';
 import { t } from 'c-3po';
+import zenscroll from 'zenscroll';
 
 import type { PlaceInfo, PlaceInfoRelated } from '../model/PlaceInfo';
 import {
@@ -45,11 +46,15 @@ export default class Result extends Component<*, Props, State> {
   toggle() {
     this.setState({ isExpanded: !this.state.isExpanded });
     this.element.focus();
+    setTimeout(() => zenscroll.intoView(this.element), 300);
   }
 
   collapse() { this.setState({ isExpanded: false }); }
 
-  expand() { this.setState({ isExpanded: true }); }
+  expand() {
+    this.setState({ isExpanded: true });
+    setTimeout(() => zenscroll.intoView(this.element), 300);
+  }
 
   selectPreviousElement() {
     if (this.element.previousElementSibling instanceof HTMLElement) {
