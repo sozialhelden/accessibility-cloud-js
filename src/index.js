@@ -7,7 +7,7 @@ import './index.css';
 ReactDOM.render(
   React.createElement(App, {
     token: '11abe59ec926dfc81926545400f9f2b5', // <-- Replace this token with your own
-    locale: 'de', // <-- Replace this with the locale you want to use
+    locale: 'de_DE', // <-- Replace this with the locale you want to use
     requestParameters: {
       latitude: 48.866667,
       longitude: 2.333333,
