@@ -98,6 +98,10 @@
   padding: 0;
 }
 
+.ac-details em {
+  font-style: normal;
+}
+
 .ac-result .ac-group > .subtle {
   font-weight: 400;
 }
