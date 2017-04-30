@@ -45,7 +45,8 @@ export default class App extends Component<DefaultProps, Props, *> {
 
 
   componentDidMount() {
-    this.resultsList.sendRequest();
+    const resultsList: ResultsList = this.resultsList;
+    resultsList.sendRequest();
   }
 
 
