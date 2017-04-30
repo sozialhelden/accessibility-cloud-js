@@ -16,10 +16,6 @@ msgstr ""
 msgid "Loading..."
 msgstr ""
 
-#: src/components/XHRComponent.jsx:100
-msgid "HTTP error from server."
-msgstr ""
-
 #: src/components/Result.jsx:39
 msgid "Accessible with wheelchair"
 msgstr "Accessible with wheelchair"
@@ -31,6 +27,10 @@ msgstr "Partially accessible with wheelchair"
 #: src/components/Result.jsx:41
 msgid "Not accessible with wheelchair"
 msgstr "Not accessible with wheelchair"
+
+#: src/components/XHRComponent.jsx:100
+msgid "HTTP error from server."
+msgstr ""
 
 #: src/components/AccessibilityDetails.jsx:14
 msgid "Yes"

@@ -16,10 +16,6 @@ msgstr "Keine Ergebnisse."
 msgid "Loading..."
 msgstr "Lädt..."
 
-#: src/components/XHRComponent.jsx:100
-msgid "HTTP error from server."
-msgstr "HTTP-Fehler vom Server."
-
 #: src/components/Result.jsx:39
 msgid "Accessible with wheelchair"
 msgstr "Rollstuhlgerecht"
@@ -31,6 +27,10 @@ msgstr "Teilweise rollstuhlgerecht"
 #: src/components/Result.jsx:41
 msgid "Not accessible with wheelchair"
 msgstr "Nicht rollstuhlgerecht"
+
+#: src/components/XHRComponent.jsx:100
+msgid "HTTP error from server."
+msgstr "HTTP-Fehler vom Server."
 
 #: src/components/AccessibilityDetails.jsx:14
 msgid "Yes"
@@ -62,4 +62,4 @@ msgstr "In OpenStreetMap anzeigen"
 
 #: src/components/Distance.jsx:55
 msgid "${ value } ${ unit } from here."
-msgstr "${value} ${unit} von hier."
+msgstr "${ value } ${ unit } von hier."
