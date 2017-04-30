@@ -3,80 +3,21 @@
 
 import React, { Component } from 'react';
 import { t } from 'c-3po';
-import get from 'lodash/get';
-import set from 'lodash/set';
-import isArray from 'lodash/isArray';
-import cloneDeep from 'lodash/cloneDeep';
-import isPlainObject from 'lodash/isPlainObject';
-import humanizeString from 'humanize-string';
 
-import AccessibilityDetails from './AccessibilityDetails';
-import InfoPageLink from './InfoPageLink';
+import type { PlaceInfo, PlaceInfoRelated } from '../model/PlaceInfo';
+import {
+  isAccessible,
+  hasAdditionalAccessibilityProperties,
+  humanizedCategory,
+  accessibilitySummary,
+} from '../model/PlaceInfo';
+
+import InfoIcon from './InfoIcon';
 import Distance from './Distance';
-import type { PlaceInfo, PlaceInfoRelated, PlaceInfoProperties } from '../model/PlaceInfo';
 import PlaceIcon from './PlaceIcon';
 import ExtraInfo from './ExtraInfo';
-import InfoIcon from './InfoIcon';
-
-
-function humanizedCategory(properties: PlaceInfoProperties): ?string {
-  if (!properties) { return null; }
-  return properties.localizedCategory || humanizeString(properties.category);
-}
-
-
-function isAccessible(properties: PlaceInfoProperties): boolean {
-  return Boolean(get(properties, 'accessibility.accessibleWith.wheelchair'));
-}
-
-
-function isPartiallyAccessible(properties: PlaceInfoProperties): boolean {
-  return Boolean(get(properties, 'accessibility.isPartiallyAccessible.wheelchair'));
-}
-
-
-function accessibilitySummary(properties: PlaceInfoProperties) {
-  if (isAccessible(properties)) { return t`Accessible with wheelchair`; }
-  if (isPartiallyAccessible(properties)) { return t`Partially accessible with wheelchair`; }
-  return t`Not accessible with wheelchair`;
-}
-
-function isDefined(x): boolean {
-  return typeof x !== 'undefined' &&
-    x !== null &&
-    !(isArray(x) && x.length === 0) &&
-    !(isPlainObject(x) && Object.keys(x).length === 0);
-}
-
-function removeNullAndUndefinedFields(something: ?any): ?any {
-  if (isPlainObject(something)) {
-    const result = {};
-    Object.keys(something)
-      .filter(key => isDefined(something[key]) && !key.match(/Localized$/))
-      .forEach((key) => {
-        const value = removeNullAndUndefinedFields(something[key]);
-        if (isDefined(value)) {
-          result[key] = value;
-        }
-      });
-    return Object.keys(result).length > 0 ? result : undefined;
-  } else if (isArray(something)) {
-    const result = something
-      .filter(isDefined)
-      .map(removeNullAndUndefinedFields);
-    return result.length ? result : undefined; // filter out empty arrays
-  }
-  return something;
-}
-
-
-function hasAdditionalAccessibilityProperties(properties: PlaceInfoProperties): boolean {
-  const clonedProperties = cloneDeep(properties);
-  set(clonedProperties, 'accessibility.accessibleWith.wheelchair', null);
-  set(clonedProperties, 'accessibility.partiallyAccessibleWith.wheelchair', null);
-  const propertiesAfterRemoval = removeNullAndUndefinedFields(clonedProperties);
-  return Boolean(propertiesAfterRemoval && propertiesAfterRemoval.accessibility);
-}
+import InfoPageLink from './InfoPageLink';
+import AccessibilityDetails from './AccessibilityDetails';
 
 
 type State = {
@@ -98,6 +39,7 @@ export default class Result extends Component<*, Props, State> {
   }
 
   state = { isExpanded: false };
+
   element: HTMLElement;
 
   toggle() {
@@ -110,19 +52,18 @@ export default class Result extends Component<*, Props, State> {
   expand() { this.setState({ isExpanded: true }); }
 
   selectPreviousElement() {
-    if (this.element.previousElementSibling) {
+    if (this.element.previousElementSibling instanceof HTMLElement) {
       this.element.previousElementSibling.focus();
     }
   }
 
   selectNextElement() {
-    if (this.element.nextElementSibling) {
+    if (this.element.nextElementSibling instanceof HTMLElement) {
       this.element.nextElementSibling.focus();
     }
   }
 
   handleKeyDown(event: KeyboardEvent) {
-    // debugger;
     switch (event.keyCode) {
       case 13:
         this.toggle();
@@ -145,40 +86,41 @@ export default class Result extends Component<*, Props, State> {
   }
 
   render() {
-    const placeInfo = this.props.placeInfo;
-    const properties = placeInfo.properties;
-    const related = this.props.related;
+    let infoIconOrNothing;
+    let distanceInfo;
+    let details;
 
-    const classNames = {
-      'ac-result': true,
-      'is-accessible': isAccessible(properties),
-    };
-    const classNamesString = Object.keys(classNames)
-      .filter(name => classNames[name])
-      .join(' ');
-
-    const id = `ac-details-${placeInfo.properties._id}`;
     const locale = this.props.locale;
-
-
-    const hasDetails = hasAdditionalAccessibilityProperties(properties);
-
-    const detailsOrNothing = hasDetails ? (<div
-      className="ac-details"
-      aria-hidden={!this.state.isExpanded}
-
-    >
-      <ExtraInfo locale={locale} related={related} sourceId={properties.sourceId} />
-      <AccessibilityDetails details={properties.accessibility} role="tree" />
-    </div>) : null;
-
-    const infoIconOrNothing = hasDetails ? <InfoIcon role="presentation" /> : null;
+    const related = this.props.related;
+    const placeInfo = this.props.placeInfo;
+    const geometry = placeInfo.geometry;
+    const properties = placeInfo.properties;
+    const distance = properties.distance;
+    const id = `ac-details-${properties._id}`;
     const categoryName = humanizedCategory(properties);
+    const isExpandable = hasAdditionalAccessibilityProperties(properties);
+    const categoryLabel = categoryName ? `${t`Category`}: ${categoryName}.` : '';
+
+    if (geometry) {
+      distanceInfo = <Distance locale={locale} distance={distance} geometry={geometry} />;
+    }
+
+    if (isExpandable) {
+      infoIconOrNothing = <InfoIcon role="presentation" />;
+      details = (<div
+        className="ac-details"
+        aria-hidden={!this.state.isExpanded}
+      >
+        <ExtraInfo locale={locale} related={related} sourceId={properties.sourceId} />
+        <AccessibilityDetails details={properties.accessibility} role="tree" />
+      </div>);
+    }
+
     return (<button
-      className={classNamesString}
-      aria-controls={hasDetails ? id : null}
-      aria-expanded={hasDetails ? this.state.isExpanded : null}
-      onClick={hasDetails ? event => this.toggle(event) : null}
+      className={`ac-result ${isAccessible(properties) ? 'is-accessible' : ''}`}
+      aria-controls={isExpandable ? id : null}
+      aria-expanded={isExpandable ? this.state.isExpanded : null}
+      onClick={isExpandable ? event => this.toggle(event) : null}
       onBlur={event => this.collapse(event)}
       onKeyDown={event => this.handleKeyDown(event)}
       role="listitem"
@@ -189,10 +131,10 @@ export default class Result extends Component<*, Props, State> {
       <PlaceIcon category={properties.category || 'undefined'} apiBaseUrl={this.props.apiBaseUrl} />
       <header className="ac-result-name" role="heading">{properties.name}</header>
       <InfoPageLink related={related} properties={properties} />
-      <section className="ac-result-category" aria-label={categoryName}>{categoryName}</section>
-      <Distance locale={locale} distance={properties.distance} geometry={placeInfo.geometry} />
+      <section className="ac-result-category" aria-label={categoryLabel}>{categoryName}</section>
+      {distanceInfo}
       <div className="ac-summary">{accessibilitySummary(properties)}{infoIconOrNothing}</div>
-      {detailsOrNothing}
+      {details}
     </button>);
   }
 }
