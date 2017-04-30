@@ -16,7 +16,7 @@ export default function ExtraInfo(props: Props) {
   const translations = get(props.related, key);
 
   if (translations) {
-    return (<header className="ac-result-extra-info">
+    return (<header className="ac-result-extra-info" aria-hidden>
       {translateWithObject(translations, props.locale)}
     </header>);
   }
