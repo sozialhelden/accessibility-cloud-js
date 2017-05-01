@@ -1,10 +1,12 @@
 // @flow
 
 import React from 'react';
+import { t } from 'c-3po';
 import Result from './Result';
 import type { PlaceInfoCollection } from '../model/PlaceInfo';
 import createXHRComponent from './XHRComponent';
 import type { XHRProps, XHRState } from './XHRComponent';
+import Sources from './Sources';
 
 type Props = XHRProps & XHRState & {
   response: PlaceInfoCollection,
@@ -33,6 +35,11 @@ class ResultsList extends React.Component<any, Props, any> {
           locale={locale}
           related={this.props.response.related}
         />)}
+        <Sources
+          related={this.props.response.related}
+          apiBaseUrl={this.props.apiBaseUrl}
+          title={t`Sources:`}
+        />
       </section>);
     }
     return (<div className="ac-no-results">{this.props.noResultsText}</div>);

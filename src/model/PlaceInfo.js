@@ -35,8 +35,8 @@ export type PlaceInfo = {
 };
 
 export type PlaceInfoRelated = {
-  sources: { [string]: Source[] },
-  licenses: { [string]: License[] },
+  sources: { [string]: Source },
+  licenses: { [string]: License },
 };
 
 export type PlaceInfoCollection = {

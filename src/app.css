@@ -190,3 +190,30 @@ dt[data-key="entrances"] + dd {
 .ac-error {
   color: red;
 }
+
+.ac-licenses {
+  font-size: 0.75em;
+  opacity: 0.7;
+}
+
+.ac-licenses header {
+  display: inline;
+  margin-right: 0.5em;
+  font-weight: bolder;
+}
+
+.ac-licenses ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  display: inline;
+}
+
+.ac-licenses li {
+  display: inline;
+}
+
+.ac-licenses li + li:before {
+  content: ', ';
+  margin-right: 0.3em;
+}

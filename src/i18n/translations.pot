@@ -72,3 +72,7 @@ msgstr ""
 #: src/components/InfoPageLink.jsx:18
 msgid "Show ‘${ props.properties.name }’ on ${ sourceName }"
 msgstr ""
+
+#: src/components/ResultsList.jsx:41
+msgid "Sources:"
+msgstr ""
