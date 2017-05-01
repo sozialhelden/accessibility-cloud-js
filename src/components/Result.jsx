@@ -127,7 +127,6 @@ export default class Result extends Component<*, Props, State> {
       aria-expanded={isExpandable ? this.state.isExpanded : null}
       onTouchStart={isExpandable ? event => this.toggle(event) : null}
       onMouseDown={isExpandable ? event => this.toggle(event) : null}
-      onBlur={event => this.collapse(event)}
       onKeyDown={event => this.handleKeyDown(event)}
       role="listitem"
       tabIndex="0"
