@@ -1,5 +1,7 @@
 # accessibility.cloud – JavaScript widget
 
+First: [Look at our demo!](https://sozialhelden.github.io/accessibility-cloud-js/)
+
 This is a small and easy-to-use browser JS library. It…
 
 - fetches data from [accessibility.cloud](https://www.accessibility.cloud) via its API
