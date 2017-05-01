@@ -8,41 +8,36 @@ msgstr ""
 "Language: en_US\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/App.jsx:107
+#: src/App.jsx:108 src/App.jsx:109 src/App.jsx:110 src/App.jsx:122
+#: src/App.jsx:126
 msgid "No results."
 msgstr ""
 
-#: src/App.jsx:108
+#: src/App.jsx:109 src/App.jsx:110 src/App.jsx:111 src/App.jsx:123
+#: src/App.jsx:127
 msgid "Loading..."
 msgstr ""
 
-#: src/components/Result.jsx:39
-msgid "Accessible with wheelchair"
-msgstr "Accessible with wheelchair"
+#: src/components/Result.jsx:102 src/components/Result.jsx:107
+#: src/components/Result.jsx:109
+msgid "Category"
+msgstr ""
 
-#: src/components/Result.jsx:40
-msgid "Partially accessible with wheelchair"
-msgstr "Partially accessible with wheelchair"
-
-#: src/components/Result.jsx:41
-msgid "Not accessible with wheelchair"
-msgstr "Not accessible with wheelchair"
-
-#: src/components/XHRComponent.jsx:100
+#: src/components/XHRComponent.jsx:82
 msgid "HTTP error from server."
 msgstr ""
 
-#: src/components/AccessibilityDetails.jsx:14
-msgid "Yes"
-msgstr "Yes"
+#: src/model/PlaceInfo.js:66
+msgid "Accessible with wheelchair"
+msgstr "Accessible with wheelchair"
 
-#: src/components/AccessibilityDetails.jsx:15
-msgid "No"
-msgstr "No"
+#: src/model/PlaceInfo.js:67
+msgid "Partially accessible with wheelchair"
+msgstr "Partially accessible with wheelchair"
 
-#: src/components/InfoPageLink.jsx:18
-msgid "Show ‘${ props.properties.name }’ on ${ sourceName }"
-msgstr ""
+#: src/model/PlaceInfo.js:68
+msgid "Not accessible with wheelchair"
+msgstr "Not accessible with wheelchair"
 
 #: src/components/Distance.jsx:37
 msgid "meters"
@@ -62,4 +57,20 @@ msgstr ""
 
 #: src/components/Distance.jsx:55
 msgid "${ value } ${ unit } from here."
+msgstr ""
+
+#: src/components/AccessibilityDetails.jsx:16
+msgid "Yes"
+msgstr "Yes"
+
+#: src/components/AccessibilityDetails.jsx:17
+msgid "No"
+msgstr "No"
+
+#: src/components/InfoPageLink.jsx:18
+msgid "Show ‘${ props.properties.name }’ on ${ sourceName }"
+msgstr ""
+
+#: src/components/ResultsList.jsx:41
+msgid "Sources:"
 msgstr ""
