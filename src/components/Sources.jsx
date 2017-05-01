@@ -20,7 +20,7 @@ export default function Sources(props: Props) {
           const licenseURL = `${props.apiBaseUrl}/licenses/${license._id}`;
           const sourceURL = source.originWebsiteURL ||
             `${props.apiBaseUrl}/sources/${source._id}`;
-          return (<li className="ac-source">
+          return (<li className="ac-source" key={source._id}>
             <a className="ac-source-name" href={sourceURL}>{source.shortName || source.name}</a>&nbsp;
             (<a className="ac-source-license" href={licenseURL}>{license.shortName || license.name}</a>)
           </li>);
