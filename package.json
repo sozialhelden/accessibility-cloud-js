@@ -72,7 +72,7 @@
     "push-translations": "tx push -s",
     "pull-translations": "tx pull -a",
     "preversion": "npm run pull-translations && npm test",
-    "version": "npm run clean && npm run build-lib && cp dist/accessibility.cloud.min.js dist/accessibility.cloud.${npm_package_version}.min.js && git add .",
+    "version": "npm run clean && npm run build-lib && git add .",
     "postversion": "npm test",
     "test": "node scripts/test.js --env=jsdom",
     "flow": "flow",

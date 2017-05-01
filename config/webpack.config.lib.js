@@ -7,7 +7,7 @@ const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
-
+const packageVersion = require(paths.appPackageJson).version;
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -29,7 +29,7 @@ if (env.stringified['process.env'].NODE_ENV !== '"production"') {
 }
 
 // Note: defined here because it will be used more than once.
-const cssFilename = 'example/accessibility.cloud.[contenthash:8].css';
+const cssFilename = `example/accessibility.cloud-${packageVersion}-[contenthash:8].css`;
 
 // ExtractTextPlugin expects the build output to be flat.
 // (See https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/27)
@@ -74,8 +74,8 @@ module.exports = {
     // Generated JS file names (with nested folders).
     // There will be one main bundle, and one file per asynchronous chunk.
     // We don't currently advertise code splitting but Webpack supports it.
-    filename: 'example/accessibility.cloud.[chunkhash:8].js',
-    chunkFilename: 'example/accessibility.cloud.[chunkhash:8].chunk.js',
+    filename: `example/accessibility.cloud-${packageVersion}-[chunkhash:8].min.js`,
+    chunkFilename: `example/accessibility.cloud-${packageVersion}-[chunkhash:8].chunk.min.js`,
     library: 'AccessibilityCloud',
     libraryTarget: 'umd',
     // We inferred the "public path" (such as / or /my-project) from homepage.
