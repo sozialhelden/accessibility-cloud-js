@@ -8,7 +8,6 @@
 
 # production
 /build
-!/build/example
 
 # misc
 .DS_Store
