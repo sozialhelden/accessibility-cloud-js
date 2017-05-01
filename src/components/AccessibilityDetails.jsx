@@ -36,30 +36,36 @@ function DetailsArray({ array }: { array: any[] }) {
 }
 
 
+function capitalizeFirstLetter(string): string {
+  return string.charAt(0).toLocaleUpperCase() + string.slice(1);
+}
+
+
 function DetailsObject({ object }: { object: {} }) {
   const properties = Object.keys(object).map((key) => {
     if (key.match(/Localized/)) { return null; }
     const value = object[key];
     const name = formatName(key, object);
+
+    // Screen readers work better when the first letter is capitalized.
+    // If the attribute starts with a lowercase letter, there is no spoken pause
+    // between the previous attribute value and the attribute name.
+    const capitalizedName = capitalizeFirstLetter(name);
+
     if (value && (value instanceof Array || isPlainObject(value))) {
       return [
-        <dt data-key={key}>{name}</dt>,
+        <dt data-key={key}>{capitalizedName}</dt>,
         <dd><AccessibilityDetails details={value} /></dd>,
       ];
     }
     if (key.startsWith('rating')) {
       return [
-        <dt className="ac-rating">{name}:</dt>,
+        <dt className="ac-rating">{capitalizedName}:</dt>,
         <dd><FormatRating rating={parseFloat(String(value))} /></dd>,
       ];
     }
     const className = `ac-${typeof value}`;
     const formattedValue = formatValue(value);
-    // Screen readers work better when the first letter is capitalized.
-    // If the attribute starts with a lowercase letter, there is no spoken pause
-    // between the previous attribute value and the attribute name.
-    const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
-
     return [
       <dt className={className}>{capitalizedName}:</dt>,
       <dd className={className} aria-label={`${formattedValue}!`}>
