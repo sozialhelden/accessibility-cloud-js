@@ -1,7 +1,6 @@
 {
   "name": "accessibility-cloud-js",
-  "version": "1.0.0",
-  "private": true,
+  "version": "3.0.0",
   "homepage": "http://sozialhelden.github.io/accessibility-cloud-js",
   "main": "src/App.jsx",
   "dependencies": {
