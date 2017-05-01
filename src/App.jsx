@@ -6,12 +6,16 @@ import { t, useLocale } from 'c-3po';
 import './i18n/localeSetup';
 import { defaultLocale } from './i18n/translate';
 import ResultsList from './components/ResultsList';
+import type { XHRSuccessCallback, XHRErrorCallback } from './components/XHRComponent';
 import './App.css';
+
 
 export type DefaultProps = {
   requestParameters: {},
   apiBaseUrl: string,
   locale: string,
+  onSuccess: XHRSuccessCallback,
+  onError: XHRErrorCallback,
 };
 
 export type Props = {
@@ -19,6 +23,8 @@ export type Props = {
   apiBaseUrl: string,
   locale: string,
   token: string,
+  onSuccess?: XHRSuccessCallback,
+  onError?: XHRErrorCallback,
 };
 
 
@@ -27,6 +33,8 @@ export default class App extends Component<DefaultProps, Props, *> {
     requestParameters: {},
     apiBaseUrl: 'https://www.accessibility.cloud',
     locale: defaultLocale,
+    onSuccess: null,
+    onError: null,
   };
 
   resultsList: ResultsList; // eslint-disable-line react/sort-comp
@@ -109,6 +117,8 @@ export default class App extends Component<DefaultProps, Props, *> {
       isLoadingText={t`Loading...`}
       locale={this.props.locale}
       apiBaseUrl={this.props.apiBaseUrl}
+      onError={this.props.onError}
+      onSuccess={this.props.onSuccess}
     />);
   }
 }
