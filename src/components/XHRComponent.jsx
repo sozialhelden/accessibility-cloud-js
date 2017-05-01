@@ -31,12 +31,17 @@ export type XHRState = {
 };
 
 
+export type XHRSuccessCallback = ((result: {}) => void);
+export type XHRErrorCallback = ((error: Error) => void);
+
 export type XHRProps = {
   url: string,
   query?: { [string]: string },
   headers?: { [string]: string },
   body?: ?{},
   method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
+  onSuccess?: XHRSuccessCallback,
+  onError?: XHRErrorCallback,
 };
 
 
@@ -77,20 +82,26 @@ export default function createXHRComponent<D: {}, P: XHRProps>(
       const query = this.props.query || {};
       const queryString = Object.keys(query || {}).map(key => `${key}=${query[key]}`).join('&');
       const xhr = new XMLHttpRequest();
+      const onError = (error) => {
+        this.setState({ error });
+        if (this.props.onError) this.props.onError(error);
+      };
       xhr.addEventListener('load', () => {
         if (xhr.status >= 400) {
-          this.setState({ error: new Error(t`HTTP error from server.`) });
+          onError(new Error(t`HTTP error from server.`));
+          return;
         }
         try {
           const json = JSON.parse(xhr.responseText);
           this.setState({ response: json });
+          if (this.props.onSuccess) this.props.onSuccess(json);
         } catch (error) {
-          this.setState({ error });
+          onError(error);
         }
       });
 
-      xhr.addEventListener('error', () => this.setState({ error: new Error('Transfer error.') }));
-      xhr.addEventListener('abort', () => this.setState({ error: new Error('Transfer aborted.') }));
+      xhr.addEventListener('error', () => onError(new Error('Transfer error.')));
+      xhr.addEventListener('abort', () => onError(new Error('Transfer aborted.')));
       xhr.addEventListener('loadend', () => this.setState({ isLoading: false }));
       const url = `${this.props.url}?${queryString}`;
 
