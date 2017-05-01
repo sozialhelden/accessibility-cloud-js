@@ -121,7 +121,7 @@ export default class Result extends Component<*, Props, State> {
       </div>);
     }
 
-    return (<button
+    return (<article
       className={`ac-result ${isAccessible(properties) ? 'is-accessible' : ''}`}
       aria-controls={isExpandable ? id : null}
       aria-expanded={isExpandable ? this.state.isExpanded : null}
@@ -141,6 +141,6 @@ export default class Result extends Component<*, Props, State> {
       {distanceInfo}
       <div className="ac-summary">{accessibilitySummary(properties)}{infoIconOrNothing}</div>
       {details}
-    </button>);
+    </article>);
   }
 }
