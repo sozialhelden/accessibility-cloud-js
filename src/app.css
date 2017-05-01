@@ -161,6 +161,7 @@ dt[data-key="entrances"] + dd {
   font: inherit;
   text-align: inherit;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .ac-result .ac-details {
