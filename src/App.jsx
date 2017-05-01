@@ -7,7 +7,7 @@ import './i18n/localeSetup';
 import { defaultLocale } from './i18n/translate';
 import ResultsList from './components/ResultsList';
 import type { XHRSuccessCallback, XHRErrorCallback } from './components/XHRComponent';
-import './App.css';
+import './app.css';
 
 
 export type DefaultProps = {
