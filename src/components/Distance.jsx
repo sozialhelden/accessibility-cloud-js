@@ -60,7 +60,7 @@ export default function Distance(props: Props) {
     aria-label={label}
     title={label}
   >
-    <DistanceIcon role="presentation" />
+    <DistanceIcon role="presentation" aria-hidden />
     <span className="ac-result-distance-value" role="presentation" aria-hidden>{value}</span>
     <span className="ac-result-distance-unit" role="presentation" aria-hidden>{unitAbbreviation}</span>
   </a>);
