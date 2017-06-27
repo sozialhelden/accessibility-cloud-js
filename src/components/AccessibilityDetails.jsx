@@ -29,10 +29,10 @@ function FormatRating({ rating }: { rating: number }) {
 }
 
 
-function DetailsArray({ array }: { array: any[] }) {
+function DetailsArray({ className, array }: { className: ?string, array: any[] }) {
   // eslint-disable-next-line react/no-array-index-key
   const items = array.map((e, i) => <li key={i}><AccessibilityDetails details={e} /></li>);
-  return <ul className="ac-list">{items}</ul>;
+  return <ul className={`ac-list ${className || ''}`}>{items}</ul>;
 }
 
 
@@ -41,7 +41,7 @@ function capitalizeFirstLetter(string): string {
 }
 
 
-function DetailsObject({ object }: { object: {} }) {
+function DetailsObject({ className, object }: { className: ?string, object: {} }) {
   const properties = Object.keys(object).map((key) => {
     if (key.match(/Localized/)) { return null; }
     const value = object[key];
@@ -64,22 +64,22 @@ function DetailsObject({ object }: { object: {} }) {
         <dd><FormatRating rating={parseFloat(String(value))} /></dd>,
       ];
     }
-    const className = `ac-${typeof value}`;
+    const generatedClassName = `ac-${typeof value}`;
     const formattedValue = formatValue(value);
     return [
-      <dt className={className}>{capitalizedName}:</dt>,
-      <dd className={className} aria-label={`${formattedValue}!`}>
+      <dt className={generatedClassName}>{capitalizedName}:</dt>,
+      <dd className={generatedClassName} aria-label={`${formattedValue}!`}>
         <em>{formattedValue}</em>
       </dd>,
     ];
   });
-  return <dl className="ac-group" role="treeitem">{properties}</dl>;
+  return <dl className={`ac-group ${className || ''}`} role="treeitem">{properties}</dl>;
 }
 
 
 type Props = {
   details: any,
-  className?: string,
+  className?: ?string,
 };
 
 
@@ -91,7 +91,7 @@ export default function AccessibilityDetails(props: Props) {
   if (isPlainObject(details)) {
     return <DetailsObject className={props.className} object={details} {...props} />;
   }
-  return <div>{details}</div>;
+  return <div className={props.className}>{details}</div>;
 }
 
 
