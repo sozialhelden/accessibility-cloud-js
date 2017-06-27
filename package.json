@@ -1,5 +1,5 @@
 {
-  "name": "accessibility-cloud-js",
+  "name": "accessibility-cloud-widget",
   "version": "3.3.0",
   "homepage": "http://sozialhelden.github.io/accessibility-cloud-js",
   "main": "lib/App.jsx",
@@ -74,9 +74,9 @@
     "build": "extract=1 BABEL_DISABLE_CACHE=1 node scripts/build.js",
     "push-translations": "tx push -s",
     "pull-translations": "tx pull -a",
-    "preversion": "npm run pull-translations && npm test",
+    "preversion": "npm run pull-translations",
     "version": "npm run clean && npm run build-lib && git add .",
-    "postversion": "npm test",
+    "postversion": "",
     "test": "node scripts/test.js --env=jsdom",
     "flow": "flow",
     "devtools": "react-devtools",
