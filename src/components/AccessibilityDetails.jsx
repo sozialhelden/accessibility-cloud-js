@@ -78,17 +78,21 @@ function DetailsObject({ object }: { object: {} }) {
 
 
 type Props = {
-  details: any;
+  details: any,
+  className?: string,
 };
 
 
 export default function AccessibilityDetails(props: Props) {
   const details = props.details;
   if (details instanceof Array) {
-    return <DetailsArray array={details} {...props} />;
+    return <DetailsArray className={props.className} array={details} {...props} />;
   }
   if (isPlainObject(details)) {
-    return <DetailsObject object={details} {...props} />;
+    return <DetailsObject className={props.className} object={details} {...props} />;
   }
   return <div>{details}</div>;
 }
+
+
+AccessibilityDetails.defaultProps = { className: null };
