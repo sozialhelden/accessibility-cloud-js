@@ -83,7 +83,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
     "prepublish": "npm run babel-prepublish && npm run flow-prepublish",
-    "babel-prepublish": "babel --no-babelrc src/ -d lib --presets=react-app --plugins=transform-flow-strip-types --ignore '*.test.js'",
+    "babel-prepublish": "NODE_ENV=production babel --no-babelrc src/ -d lib --presets=react-app --plugins=transform-flow-strip-types --ignore '*.test.js'",
     "flow-prepublish": "flow-copy-source src lib"
   },
   "jest": {
