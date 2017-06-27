@@ -77,7 +77,7 @@
     "pull-translations": "tx pull -a",
     "npmignore": "npmignore -u /lib",
     "preversion": "npm run pull-translations; npm run npmignore",
-    "version": "npm run clean && npm run build-lib && git add . && git commit -am 'build library'",
+    "version": "npm run clean && npm run build-lib && git add . && git commit -am 'build library' && git status",
     "postversion": "",
     "test": "node scripts/test.js --env=jsdom",
     "flow": "flow",
