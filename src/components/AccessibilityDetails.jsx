@@ -4,7 +4,6 @@ import React from 'react';
 import isPlainObject from 'lodash/isPlainObject';
 import humanizeString from 'humanize-string';
 import { t, useLocale } from 'c-3po';
-import { defaultLocale } from '../i18n/translate';
 
 
 function formatName(name: string, properties: {}): string {
@@ -80,7 +79,7 @@ function DetailsObject({ className, object }: { className: ?string, object: {} }
 
 type Props = {
   details: any,
-  locale?: string,
+  locale?: ?string,
   className?: ?string,
 };
 
@@ -99,4 +98,4 @@ export default function AccessibilityDetails(props: Props) {
 }
 
 
-AccessibilityDetails.defaultProps = { className: null, locale: defaultLocale };
+AccessibilityDetails.defaultProps = { className: null, locale: null };
