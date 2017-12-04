@@ -4,6 +4,7 @@ import React from 'react';
 import isPlainObject from 'lodash/isPlainObject';
 import humanizeString from 'humanize-string';
 import { t, useLocale } from 'c-3po';
+import { defaultLocale } from '../i18n/translate';
 
 
 function formatName(name: string, properties: {}): string {
