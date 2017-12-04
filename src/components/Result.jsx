@@ -117,7 +117,7 @@ export default class Result extends Component<*, Props, State> {
         aria-hidden={!this.state.isExpanded}
       >
         <ExtraInfo locale={locale} related={related} sourceId={properties.sourceId} />
-        <AccessibilityDetails details={properties.accessibility} role="tree" />
+        <AccessibilityDetails details={properties.accessibility} role="tree" locale={locale} />
       </div>);
     }
 

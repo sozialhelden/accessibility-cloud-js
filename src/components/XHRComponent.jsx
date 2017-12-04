@@ -40,8 +40,8 @@ export type XHRProps = {
   headers?: { [string]: string },
   body?: ?{},
   method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE',
-  onSuccess?: XHRSuccessCallback,
-  onError?: XHRErrorCallback,
+  onSuccess?: ?XHRSuccessCallback,
+  onError?: ?XHRErrorCallback,
 };
 
 

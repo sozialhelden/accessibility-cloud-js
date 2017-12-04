@@ -3,7 +3,7 @@
 import React from 'react';
 import isPlainObject from 'lodash/isPlainObject';
 import humanizeString from 'humanize-string';
-import { t } from 'c-3po';
+import { t, useLocale } from 'c-3po';
 
 
 function formatName(name: string, properties: {}): string {
@@ -79,11 +79,14 @@ function DetailsObject({ className, object }: { className: ?string, object: {} }
 
 type Props = {
   details: any,
+  locale?: string,
   className?: ?string,
 };
 
 
 export default function AccessibilityDetails(props: Props) {
+  if (props.locale) useLocale(props.locale);
+
   const details = props.details;
   if (details instanceof Array) {
     return <DetailsArray className={props.className} array={details} {...props} />;
@@ -95,4 +98,4 @@ export default function AccessibilityDetails(props: Props) {
 }
 
 
-AccessibilityDetails.defaultProps = { className: null };
+AccessibilityDetails.defaultProps = { className: null, locale: defaultLocale };

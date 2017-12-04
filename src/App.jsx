@@ -10,21 +10,22 @@ import type { XHRSuccessCallback, XHRErrorCallback } from './components/XHRCompo
 import './app.css';
 
 
-export type DefaultProps = {
-  requestParameters: {},
-  apiBaseUrl: string,
-  locale: string,
-  onSuccess: XHRSuccessCallback,
-  onError: XHRErrorCallback,
-};
-
 export type Props = {
   requestParameters?: {},
   apiBaseUrl: string,
   locale: string,
   token: string,
-  onSuccess?: XHRSuccessCallback,
-  onError?: XHRErrorCallback,
+  onSuccess?: ?XHRSuccessCallback,
+  onError?: ?XHRErrorCallback,
+};
+
+
+export type DefaultProps = {
+  requestParameters: {},
+  apiBaseUrl: string,
+  locale: string,
+  onSuccess: ?XHRSuccessCallback,
+  onError: ?XHRErrorCallback,
 };
 
 

@@ -27,7 +27,7 @@ if (extract) {
 }
 
 if (locale) {
-  c3po.resolve = { translations: locale !== 'default' ? `src/i18n/${locale}.po` : 'default' };
+  c3po.resolve = { translations: locale !== 'default' ? `src/i18n/${locale}.txt` : 'default' };
 }
 
 // This is the development configuration.
