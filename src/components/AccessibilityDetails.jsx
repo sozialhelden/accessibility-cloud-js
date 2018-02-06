@@ -41,7 +41,8 @@ function capitalizeFirstLetter(string): string {
 }
 
 
-function DetailsObject({ className, object }: { className: ?string, object: {} }) {
+function DetailsObject(props: { className: ?string, object: {} }) {
+  const { className, object } = props;
   const properties = Object.keys(object).map((key) => {
     if (key.match(/Localized/)) { return null; }
     const value = object[key];
@@ -73,7 +74,7 @@ function DetailsObject({ className, object }: { className: ?string, object: {} }
       </dd>,
     ];
   });
-  return <dl className={`ac-group ${className || ''}`} role="treeitem">{properties}</dl>;
+  return <dl className={`ac-group ${className || ''}`} role="treeitem" {...props}>{properties}</dl>;
 }
 
 
@@ -94,7 +95,7 @@ export default function AccessibilityDetails(props: Props) {
   if (isPlainObject(details)) {
     return <DetailsObject className={props.className} object={details} {...props} />;
   }
-  return <div className={props.className}>{details}</div>;
+  return <div className={props.className} {...props}>{details}</div>;
 }
 
 
