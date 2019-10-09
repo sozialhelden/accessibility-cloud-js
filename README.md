@@ -29,10 +29,10 @@ To include the widget into your application or website, you have to go through t
 - Create an organization
 - Fill out and submit the organization form and submit. You will be forwared to the organization
   view.
-- Click "API Clients" in the header
-- Click "Add API client", fill out and submit the form.
+- Click "Apps" in the header
+- Click "Add an App", fill out and submit the form.
 - Copy your *API access token*.
-  ![Screenshot of accessibility.cloud API Clients view](./docs/get-api-token.png)
+  ![Screenshot of accessibility.cloud Apps view](./docs/get-api-token.png)
 
 ### Run the client
 
